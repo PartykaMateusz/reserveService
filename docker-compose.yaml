@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  reserve-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8083"
+    environment:
+      - JAVA_TOOL_OPTIONS=-XX:MaxRAMPercentage=75.0
+    command: ["java", "-jar", "reserveService.jar"]
+  mongo:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
