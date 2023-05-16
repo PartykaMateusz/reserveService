@@ -6,19 +6,27 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8083:8083"
+      - 8083:8083
     environment:
       - JAVA_TOOL_OPTIONS=-XX:MaxRAMPercentage=75.0
-    command: ["java", "-jar", "reserveService.jar"]
-  mongo:
-    image: mongo:latest
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+    command: ./gradlew bootRun
+#    command: ["java", "-jar", "reserveService.jar"]
+
+    networks:
+      - reserve-network
+
+  mongo-reserve:
+    image: mongo
     ports:
       - "27017:27017"
     volumes:
-      - mongo-data:/data/db
+      - mongodb_data:/data/db
+    networks:
+      - reserve-network
+
+
+networks:
+  reserve-network:
 
 volumes:
-  mongo-data:
+  mongodb_data:

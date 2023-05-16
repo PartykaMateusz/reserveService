@@ -3,12 +3,15 @@ spring:
     name: reserve-service
   data:
     mongodb:
-      user: test
-      password: passwordvalue
-      uri: mongodb://mongo-mongo-express-1:27017/db
+      host:
+      user: root
+      password: example
+      uri: mongodb://reserveservice-mongo-reserve-1:27017/db
 
-server:
-  port: 8083
+
+
+
+server.port: 8083
 #eureka:
 #  client:
 #    serviceUrl:

@@ -4,8 +4,13 @@ FROM openjdk:17-jdk-slim-buster
 # Set the working directory to /app
 WORKDIR /app
 
-# Copy the application JAR file to the container
-COPY build/libs/reserveService.jar /app
+# Copy the necessary files
+COPY build.gradle .
+COPY settings.gradle .
+COPY gradlew .
+COPY gradle gradle
 
-# Set the command to run the application when the container starts
-CMD ["java", "-jar", "reserveService.jar"]
+# Copy the project source code
+COPY src src
+#
+RUN chmod +x ./gradlew
