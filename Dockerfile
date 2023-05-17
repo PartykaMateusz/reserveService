@@ -14,3 +14,5 @@ COPY gradle gradle
 COPY src src
 #
 RUN chmod +x ./gradlew
+
+CMD ./gradlew clean bootRun

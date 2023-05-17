@@ -3,7 +3,6 @@ spring:
     name: reserve-service
   data:
     mongodb:
-      host:
       user: root
       password: example
       uri: mongodb://reserveservice-mongo-reserve-1:27017/db
