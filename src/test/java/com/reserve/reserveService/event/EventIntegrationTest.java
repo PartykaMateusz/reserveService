@@ -1,39 +1,23 @@
 package com.reserve.reserveService.event;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mongodb.MongoClientSettings;
-import com.mongodb.ServerAddress;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.internal.MongoClientImpl;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.MongoDBContainer;
-import org.testcontainers.containers.wait.strategy.Wait;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-import java.io.IOException;
-import java.net.Socket;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 import static com.mongodb.assertions.Assertions.assertTrue;
@@ -43,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @Testcontainers
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class EventRepositoryIntegrationTest  {
+class EventIntegrationTest {
 
     public static MongoDBContainer container = new MongoDBContainer(DockerImageName.parse("mongo"));
 
@@ -58,6 +42,7 @@ class EventRepositoryIntegrationTest  {
 
     @Autowired
     private ObjectMapper objectMapper;
+
     @BeforeAll
     void setUp() {
         container.start();
@@ -69,7 +54,7 @@ class EventRepositoryIntegrationTest  {
     }
 
     @Test
-    void testInsertDocument() throws Exception {
+    void createEvent() throws Exception {
         EventDto eventDto = new EventDto();
         eventDto.setName("testName");
         eventDto.setDescription("testDescription");
@@ -97,6 +82,28 @@ class EventRepositoryIntegrationTest  {
         assertEquals(eventDto.getDateTime(), result.getDateTime());
         assertEquals(createdEventId, result.getId());
 
+    }
+
+    @Test
+    void getEvent() throws Exception {
+        Event event = new Event();
+        event.setName("testName");
+        event.setDescription("testDescription");
+        event.setDateTime(LocalDateTime.of(2023,5,18,20,0));
+
+        String id = eventRepository.save(event).getId();
+
+        MvcResult response = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/events/"+id)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        EventDto eventDto = objectMapper.readValue(response.getResponse().getContentAsString(), EventDto.class);
+
+        assertEquals("testName", eventDto.getName());
+        assertEquals("testDescription", eventDto.getDescription());
+        assertEquals(LocalDateTime.of(2023,5,18,20,0), eventDto.getDateTime());
+        assertEquals(id, eventDto.getId());
     }
 
 }
