@@ -12,7 +12,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class EventDto {
+
+    private String id;
     private String name;
     private String description;
     private LocalDateTime dateTime;
+
 }

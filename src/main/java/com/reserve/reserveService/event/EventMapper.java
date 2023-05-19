@@ -16,6 +16,7 @@ public class EventMapper {
 
     public EventDto map(@NonNull final Event event) {
         final EventDto eventDto = new EventDto();
+        eventDto.setId(event.getId());
         eventDto.setName(event.getName());
         eventDto.setDescription(event.getDescription());
         eventDto.setDateTime(event.getDateTime());

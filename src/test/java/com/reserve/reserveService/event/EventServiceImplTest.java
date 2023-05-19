@@ -57,6 +57,7 @@ class EventServiceImplTest {
     void getEvent_ShouldReturnEvent() {
         Event event = generateEvent();
         EventDto eventDto = generateEventDto();
+        eventDto.setId(TEST_ID);
 
         // Mock dependencies
         when(eventRepository.findById(TEST_ID)).thenReturn(Optional.of(event));
@@ -69,6 +70,7 @@ class EventServiceImplTest {
         assertEquals(TEST_NAME, result.getName());
         assertEquals(TEST_DESCRIPTION, result.getDescription());
         assertEquals(TEST_DATETIME, result.getDateTime());
+        assertEquals(TEST_ID, result.getId());
     }
 
 

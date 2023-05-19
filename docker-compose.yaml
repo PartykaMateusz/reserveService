@@ -9,7 +9,7 @@ services:
       - 8083:8083
     environment:
       - JAVA_TOOL_OPTIONS=-XX:MaxRAMPercentage=75.0
-    command: ./gradlew clean build bootRun --args='--spring.profiles.active=dev'
+    command: ./gradlew clean bootRun --args='--spring.profiles.active=dev'
 #    command: ["java", "-jar", "reserveService.jar"]
 
     networks:

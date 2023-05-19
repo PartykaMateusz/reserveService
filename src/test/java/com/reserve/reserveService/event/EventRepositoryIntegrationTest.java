@@ -91,9 +91,11 @@ class EventRepositoryIntegrationTest  {
         assertTrue(optionalResult.isPresent());
         Event result = optionalResult.get();
 
+        // check if event id db equals data from dto
         assertEquals(eventDto.getName(), result.getName());
         assertEquals(eventDto.getDescription(), result.getDescription());
         assertEquals(eventDto.getDateTime(), result.getDateTime());
+        assertEquals(createdEventId, result.getId());
 
     }
 
