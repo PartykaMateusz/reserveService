@@ -20,6 +20,12 @@ public class EventController {
         this.eventService = eventService;
     }
 
+    @GetMapping("/{id}")
+    public EventDto getEvent(@PathVariable final String id) {
+        logger.trace("getting {}", id);
+        return eventService.getEvent(id);
+    }
+
     @PostMapping
     public String createEvent(@RequestBody final EventDto eventDto) {
         logger.trace("creating new event {}", eventDto.getName());

@@ -8,8 +8,6 @@ spring:
       uri: mongodb://reserveservice-mongo-reserve-1:27017/db
 
 
-
-
 server.port: 8083
 #eureka:
 #  client:
