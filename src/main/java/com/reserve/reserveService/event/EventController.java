@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/events")
 public class EventController {
 
-    Logger logger = LoggerFactory.getLogger(EventController.class);
+    static final Logger logger = LoggerFactory.getLogger(EventController.class);
 
     private final EventService eventService;
 

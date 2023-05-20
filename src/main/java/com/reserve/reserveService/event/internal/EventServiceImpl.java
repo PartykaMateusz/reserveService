@@ -1,11 +1,16 @@
 package com.reserve.reserveService.event.internal;
 
+import com.reserve.reserveService.event.EventController;
 import com.reserve.reserveService.event.EventService;
 import lombok.NonNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 class EventServiceImpl implements EventService {
+
+    static final Logger logger = LoggerFactory.getLogger(EventServiceImpl.class);
 
     private final EventRepository eventRepository;
     private final EventMapper eventMapper;
@@ -17,8 +22,9 @@ class EventServiceImpl implements EventService {
 
     @Override
     public String createEvent(@NonNull final EventDto eventDto) {
-        Event event = eventMapper.map(eventDto);
-        final Event result = eventRepository.save(event);
+        logger.info("Creating new event {}, date: {}", eventDto.getName(), eventDto.getDateTime());
+        final Event result = eventRepository.save(eventMapper.map(eventDto));
+        logger.info("Created event: {}", result.getId());
         return result.getId();
     }
 
