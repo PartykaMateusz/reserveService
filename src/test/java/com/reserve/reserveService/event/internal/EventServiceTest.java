@@ -1,10 +1,10 @@
-package com.reserve.reserveService.event;
+package com.reserve.reserveService.event.internal;
 
+import com.reserve.reserveService.event.EventService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-class EventServiceImplTest {
+class EventServiceTest {
 
     private static final String TEST_ID = "testId";
     private static final String TEST_NAME = "testName";
@@ -21,6 +21,7 @@ class EventServiceImplTest {
     private static final String TEST_DESCRIPTION = "testDesc";
 
     private static final LocalDateTime TEST_DATETIME = LocalDateTime.of(2023,6,17,20,0);
+
     EventService eventService;
 
     @Mock
@@ -29,7 +30,7 @@ class EventServiceImplTest {
     @Mock
     private EventMapper eventMapper;
 
-    public EventServiceImplTest() {
+    public EventServiceTest() {
         MockitoAnnotations.openMocks(this);
         eventService = new EventServiceImpl(eventRepository, eventMapper);
     }
@@ -72,7 +73,6 @@ class EventServiceImplTest {
         assertEquals(TEST_DATETIME, result.getDateTime());
         assertEquals(TEST_ID, result.getId());
     }
-
 
     private EventDto generateEventDto() {
         EventDto eventDto1 = new EventDto();

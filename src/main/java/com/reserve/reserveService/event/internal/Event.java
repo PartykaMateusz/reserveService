@@ -1,5 +1,6 @@
-package com.reserve.reserveService.event;
+package com.reserve.reserveService.event.internal;
 
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,9 +10,8 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Document(collection = "events")
-@Getter
-@Setter
-class Event {
+@Data
+public class Event {
 
     @Id
     private String id;

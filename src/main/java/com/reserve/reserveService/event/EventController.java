@@ -1,11 +1,9 @@
 package com.reserve.reserveService.event;
 
-import lombok.Getter;
+import com.reserve.reserveService.event.internal.EventDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
 
 
 @RestController

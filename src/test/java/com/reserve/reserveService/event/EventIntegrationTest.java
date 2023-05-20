@@ -1,6 +1,9 @@
 package com.reserve.reserveService.event;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.reserve.reserveService.event.internal.Event;
+import com.reserve.reserveService.event.internal.EventDto;
+import com.reserve.reserveService.event.internal.EventRepository;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

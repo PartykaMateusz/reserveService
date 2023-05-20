@@ -1,4 +1,4 @@
-package com.reserve.reserveService.event;
+package com.reserve.reserveService.event.internal;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode
-public class EventDto {
+public final class EventDto {
 
     private String id;
     private String name;

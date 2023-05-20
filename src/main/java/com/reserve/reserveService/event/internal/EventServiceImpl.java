@@ -1,9 +1,8 @@
-package com.reserve.reserveService.event;
+package com.reserve.reserveService.event.internal;
 
+import com.reserve.reserveService.event.EventService;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 class EventServiceImpl implements EventService {

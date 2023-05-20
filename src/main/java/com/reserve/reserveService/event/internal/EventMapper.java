@@ -1,4 +1,4 @@
-package com.reserve.reserveService.event;
+package com.reserve.reserveService.event.internal;
 
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
