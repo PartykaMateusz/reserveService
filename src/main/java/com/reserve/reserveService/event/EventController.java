@@ -3,11 +3,13 @@ package com.reserve.reserveService.event;
 import com.reserve.reserveService.event.internal.EventDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api/v1/events")
+@RequestMapping("/api/v1/event")
 public class EventController {
 
     static final Logger logger = LoggerFactory.getLogger(EventController.class);
@@ -19,14 +21,14 @@ public class EventController {
     }
 
     @GetMapping("/{id}")
-    public EventDto getEvent(@PathVariable final String id) {
+    public ResponseEntity<EventDto> getEvent(@PathVariable final String id) {
         logger.trace("getting {}", id);
-        return eventService.getEvent(id);
+        return ResponseEntity.ok(eventService.getEvent(id));
     }
 
     @PostMapping
-    public String createEvent(@RequestBody final EventDto eventDto) {
+    public ResponseEntity<String> createEvent(@RequestBody final EventDto eventDto) {
         logger.trace("creating new event {}", eventDto.getName());
-        return eventService.createEvent(eventDto);
+        return new ResponseEntity<>(eventService.createEvent(eventDto), HttpStatus.CREATED);
     }
 }
