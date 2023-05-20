@@ -1,4 +1,4 @@
-package com.reserve.reserveService.event.internal;
+package com.reserve.reserveService.arena.internal;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -9,16 +9,13 @@ import java.time.LocalDateTime;
 
 @Document(collection = "events")
 @Data
-public class Event {
+public class Arena {
 
     @Id
     private String id;
-
-    private LocalDateTime dateTime;
 
     @Indexed(unique = true)
     private String name;
 
     private String description;
-
 }

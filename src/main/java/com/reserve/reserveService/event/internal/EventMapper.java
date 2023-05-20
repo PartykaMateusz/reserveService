@@ -1,16 +1,18 @@
 package com.reserve.reserveService.event.internal;
 
+import com.reserve.reserveService.event.internal.dto.CreateEventRequest;
+import com.reserve.reserveService.event.internal.dto.EventDto;
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EventMapper {
+ class EventMapper {
 
-    public Event map(@NonNull final EventDto eventDto) {
+    public Event map(@NonNull final CreateEventRequest createEventRequest) {
         final Event event = new Event();
-        event.setName(eventDto.getName());
-        event.setDescription(eventDto.getDescription());
-        event.setDateTime(eventDto.getDateTime());
+        event.setName(createEventRequest.getName());
+        event.setDescription(createEventRequest.getDescription());
+        event.setDateTime(createEventRequest.getDateTime());
         return event;
     }
 

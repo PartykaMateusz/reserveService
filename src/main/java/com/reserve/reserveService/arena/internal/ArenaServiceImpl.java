@@ -1,11 +1,24 @@
 package com.reserve.reserveService.arena.internal;
 
 import com.reserve.reserveService.arena.ArenaService;
+import com.reserve.reserveService.arena.internal.dto.CreateArenaRequest;
+import lombok.NonNull;
+import org.springframework.stereotype.Service;
 
+@Service
 class ArenaServiceImpl implements ArenaService {
 
+    private final ArenaMapper arenaMapper;
+    private final ArenaRepository arenaRepository;
+
+    public ArenaServiceImpl(final ArenaMapper arenaMapper, final ArenaRepository arenaRepository) {
+        this.arenaMapper = arenaMapper;
+        this.arenaRepository = arenaRepository;
+    }
+
     @Override
-    public String createArena(ArenaDto arenaDto) {
-        return this.arenaRepository.create(this.arenaMapper.map(arenaDto));
+    public String createArena(@NonNull final CreateArenaRequest createArenaRequest) {
+        Arena result = this.arenaRepository.save(this.arenaMapper.map(createArenaRequest));
+        return result.getId();
     }
 }

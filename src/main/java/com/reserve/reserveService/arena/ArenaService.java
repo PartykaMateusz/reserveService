@@ -1,7 +1,7 @@
 package com.reserve.reserveService.arena;
 
-import com.reserve.reserveService.arena.internal.ArenaDto;
+import com.reserve.reserveService.arena.internal.dto.CreateArenaRequest;
 
 public interface ArenaService {
-    String createArena(ArenaDto arenaDto);
+    String createArena(CreateArenaRequest createArenaRequest);
 }

@@ -2,7 +2,7 @@ package com.reserve.reserveService.event;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reserve.reserveService.event.internal.Event;
-import com.reserve.reserveService.event.internal.EventDto;
+import com.reserve.reserveService.event.internal.dto.EventDto;
 import com.reserve.reserveService.event.internal.EventRepository;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -65,10 +65,10 @@ class EventIntegrationTest {
 
         String eventDtoJson = objectMapper.writeValueAsString(eventDto);
 
-        MvcResult response = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/events")
+        MvcResult response = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/event")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(eventDtoJson))
-                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andReturn();
 
         // Retrieve the response content
@@ -88,6 +88,44 @@ class EventIntegrationTest {
     }
 
     @Test
+    void create2EventWithSameName() throws Exception {
+        EventDto eventDto = new EventDto();
+        eventDto.setName("testName");
+        eventDto.setDescription("testDescription");
+        eventDto.setDateTime(LocalDateTime.of(2023,5,18,20,0));
+
+        String eventDtoJson = objectMapper.writeValueAsString(eventDto);
+
+        MvcResult response = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/event")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(eventDtoJson))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andReturn();
+
+
+        MvcResult response2 = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/event")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(eventDtoJson))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andReturn();
+
+        // Retrieve the response content
+//        String createdEventId = response.getResponse().getContentAsString();
+//
+//        Optional<Event> optionalResult = eventRepository.findById(createdEventId);
+//
+//        assertTrue(optionalResult.isPresent());
+//        Event result = optionalResult.get();
+//
+//        // check if event id db equals data from dto
+//        assertEquals(eventDto.getName(), result.getName());
+//        assertEquals(eventDto.getDescription(), result.getDescription());
+//        assertEquals(eventDto.getDateTime(), result.getDateTime());
+//        assertEquals(createdEventId, result.getId());
+
+    }
+
+    @Test
     void getEvent() throws Exception {
         Event event = new Event();
         event.setName("testName");
@@ -96,7 +134,7 @@ class EventIntegrationTest {
 
         String id = eventRepository.save(event).getId();
 
-        MvcResult response = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/events/"+id)
+        MvcResult response = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/event/"+id)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();

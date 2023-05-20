@@ -1,4 +1,4 @@
-package com.reserve.reserveService.arena.internal;
+package com.reserve.reserveService.arena.internal.dto;
 
 import lombok.Data;
 

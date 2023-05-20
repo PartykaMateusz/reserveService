@@ -1,7 +1,8 @@
 package com.reserve.reserveService.event.internal;
 
-import com.reserve.reserveService.event.EventController;
 import com.reserve.reserveService.event.EventService;
+import com.reserve.reserveService.event.internal.dto.CreateEventRequest;
+import com.reserve.reserveService.event.internal.dto.EventDto;
 import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +22,9 @@ class EventServiceImpl implements EventService {
     }
 
     @Override
-    public String createEvent(@NonNull final EventDto eventDto) {
-        logger.info("Creating new event {}, date: {}", eventDto.getName(), eventDto.getDateTime());
-        final Event result = eventRepository.save(eventMapper.map(eventDto));
+    public String createEvent(@NonNull final CreateEventRequest createEventRequest) {
+        logger.info("Creating new event {}, date: {}", createEventRequest.getName(), createEventRequest.getDateTime());
+        final Event result = eventRepository.save(eventMapper.map(createEventRequest));
         logger.info("Created event: {}", result.getId());
         return result.getId();
     }

@@ -1,6 +1,8 @@
 package com.reserve.reserveService.event.internal;
 
 import com.reserve.reserveService.event.EventService;
+import com.reserve.reserveService.event.internal.dto.CreateEventRequest;
+import com.reserve.reserveService.event.internal.dto.EventDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -42,14 +44,14 @@ class EventServiceTest {
     @Test
     void createEvent_ShouldReturnEventId() {
         // Mock dependencies
-        EventDto eventDto = generateEventDto();
+        CreateEventRequest createEventRequest = new CreateEventRequest();
         Event event = generateEvent();
 
         when(eventRepository.save(any(Event.class))).thenReturn(event);
-        when(eventMapper.map(eventDto)).thenReturn(event);
+        when(eventMapper.map(createEventRequest)).thenReturn(event);
 
         // Call the method under test
-        String eventId = eventService.createEvent(eventDto);
+        String eventId = eventService.createEvent(createEventRequest);
 
         // Verify the result
         assertEquals(TEST_ID, eventId);
