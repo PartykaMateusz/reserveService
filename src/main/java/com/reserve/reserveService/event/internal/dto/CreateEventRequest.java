@@ -13,6 +13,7 @@ public final class CreateEventRequest {
 
     @NotBlank
     @Size(min = 3, max = 25)
+    @Unique(message = "name must be unique")
     private String name;
 
     private String description;

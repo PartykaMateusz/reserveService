@@ -5,7 +5,7 @@ spring:
     mongodb:
       user: root
       password: example
-      uri: mongodb://reserveservice-mongo-reserve-1:27017/db
+      uri: mongodb://reserveservice-mongo-reserve-1:27017/reservations
 
 
 server.port: 8083

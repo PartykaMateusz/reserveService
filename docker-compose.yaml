@@ -7,6 +7,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - 8083:8083
+      - 5005:5005
     environment:
       - JAVA_TOOL_OPTIONS=-XX:MaxRAMPercentage=75.0
     command: ./gradlew clean bootRun --args='--spring.profiles.active=dev'

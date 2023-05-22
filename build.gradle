@@ -48,3 +48,8 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+
+tasks.named('bootRun') {
+	jvmArgs('-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005')
+}
