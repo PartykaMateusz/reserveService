@@ -4,10 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reserve.reserveService.event.internal.Event;
 import com.reserve.reserveService.event.internal.dto.EventDto;
 import com.reserve.reserveService.event.internal.EventRepository;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -55,6 +52,12 @@ class EventIntegrationTest {
     void tearDown() {
         container.stop();
     }
+
+    @AfterEach
+    void clearDatabase() {
+        eventRepository.deleteAll();
+    }
+
 
     @Test
     void createEvent() throws Exception {
@@ -106,23 +109,8 @@ class EventIntegrationTest {
         MvcResult response2 = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/event")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(eventDtoJson))
-                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andReturn();
-
-        // Retrieve the response content
-//        String createdEventId = response.getResponse().getContentAsString();
-//
-//        Optional<Event> optionalResult = eventRepository.findById(createdEventId);
-//
-//        assertTrue(optionalResult.isPresent());
-//        Event result = optionalResult.get();
-//
-//        // check if event id db equals data from dto
-//        assertEquals(eventDto.getName(), result.getName());
-//        assertEquals(eventDto.getDescription(), result.getDescription());
-//        assertEquals(eventDto.getDateTime(), result.getDateTime());
-//        assertEquals(createdEventId, result.getId());
-
     }
 
     @Test
