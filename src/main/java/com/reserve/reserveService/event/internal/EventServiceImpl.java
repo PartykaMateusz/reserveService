@@ -31,7 +31,7 @@ class EventServiceImpl implements EventService {
 
     @Override
     public EventDto getEvent(@NonNull final String id) {
-        final Event event = eventRepository.findById(id).orElseThrow(EventNotFoundException::new);
+        final Event event = eventRepository.findById(id).orElseThrow(() -> new EventNotFoundException("Event not found"));
         return eventMapper.map(event);
     }
 }

@@ -91,7 +91,7 @@ class EventIntegrationTest {
     }
 
     @Test
-    void create2EventWithSameName() throws Exception {
+    void create2EventWithSameName_ShouldReturnBadRequest() throws Exception {
         EventDto eventDto = new EventDto();
         eventDto.setName("testName");
         eventDto.setDescription("testDescription");
@@ -99,14 +99,13 @@ class EventIntegrationTest {
 
         String eventDtoJson = objectMapper.writeValueAsString(eventDto);
 
-        MvcResult response = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/event")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/event")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(eventDtoJson))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andReturn();
 
-
-        MvcResult response2 = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/event")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/event")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(eventDtoJson))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -134,5 +133,19 @@ class EventIntegrationTest {
         assertEquals(LocalDateTime.of(2023,5,18,20,0), eventDto.getDateTime());
         assertEquals(id, eventDto.getId());
     }
+    @Test
+    void getEvent_WhenNotFound_ShouldReturnNotFound() throws Exception {
+        Event event = new Event();
+        event.setName("testName");
+        event.setDescription("testDescription");
+        event.setDateTime(LocalDateTime.of(2023,5,18,20,0));
+
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/event/testId")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andReturn();
+    }
+
 
 }

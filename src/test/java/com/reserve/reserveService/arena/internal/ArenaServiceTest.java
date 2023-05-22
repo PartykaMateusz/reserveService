@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -62,6 +64,16 @@ class ArenaServiceTest {
         // Verify the result
         assertEquals(TEST_ID, arenaId);
     }
+
+    @Test
+    void getArenaById_WhenNotExist_ShouldReturnNotFound() {
+        when(arenaRepository.findById(TEST_ID)).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(ArenaNotFoundException.class, () -> {
+            arenaService.getArena(TEST_ID);
+        });
+    }
+
 
     private Arena generateArena() {
         Arena arena = new Arena();

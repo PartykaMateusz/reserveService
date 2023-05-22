@@ -3,6 +3,7 @@ package com.reserve.reserveService.event.internal;
 import com.reserve.reserveService.event.EventService;
 import com.reserve.reserveService.event.internal.dto.CreateEventRequest;
 import com.reserve.reserveService.event.internal.dto.EventDto;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -11,7 +12,7 @@ import org.mockito.MockitoAnnotations;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -74,6 +75,15 @@ class EventServiceTest {
         assertEquals(TEST_DESCRIPTION, result.getDescription());
         assertEquals(TEST_DATETIME, result.getDateTime());
         assertEquals(TEST_ID, result.getId());
+    }
+
+    @Test
+    void getEvent_WhenNotExist_ShouldReturnNotFound() {
+        when(eventRepository.findById(TEST_ID)).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(EventNotFoundException.class, () -> {
+            eventService.getEvent(TEST_ID);
+        });
     }
 
     private EventDto generateEventDto() {

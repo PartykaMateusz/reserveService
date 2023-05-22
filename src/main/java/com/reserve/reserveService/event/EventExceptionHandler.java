@@ -1,5 +1,6 @@
 package com.reserve.reserveService.event;
 
+import com.reserve.reserveService.event.internal.EventNotFoundException;
 import com.reserve.reserveService.utils.ErrorResponse;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -25,11 +26,15 @@ public class EventExceptionHandler {
         return new ResponseEntity<>(getErrorResponse(error, 400), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(EventNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleEventNotFoundException(EventNotFoundException ex) {
+        return new ResponseEntity<>(getErrorResponse(ex.getMessage(), 404), HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(Exception ex) {
         return new ResponseEntity<>(getErrorResponse(ex.getMessage(), 500), HttpStatus.BAD_REQUEST);
     }
-
     private static ErrorResponse getErrorResponse(String message, int status) {
         return new ErrorResponse(message, status);
     }
