@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -76,7 +78,7 @@ class ArenaServiceTest {
     }
 
     @Test
-    void testUpdateArena() {
+    void updateArena() {
         // Create a sample update request
         UpdateArenaRequest updateRequest = new UpdateArenaRequest();
         updateRequest.setName("New Arena Name");
@@ -116,7 +118,7 @@ class ArenaServiceTest {
     }
 
     @Test
-    void testPartialUpdateArena() {
+    void partialUpdateArena() {
         // Create a sample partial update request
         UpdateArenaRequest partialUpdateRequest = new UpdateArenaRequest();
         partialUpdateRequest.setName("Updated Arena Name");
@@ -153,6 +155,48 @@ class ArenaServiceTest {
         // Assert the updated arena DTO
         Assertions.assertEquals(updatedArenaDto, actualArenaDto);
     }
+
+    @Test
+    void getAllArenas() {
+        // Create sample arenas
+        Arena arena1 = new Arena();
+        arena1.setId("1");
+        arena1.setName("Arena 1");
+
+        Arena arena2 = new Arena();
+        arena2.setId("2");
+        arena2.setName("Arena 2");
+
+        // Create sample arena DTOs
+        ArenaDto arenaDto1 = new ArenaDto();
+        arenaDto1.setId("1");
+        arenaDto1.setName("Arena 1 DTO");
+
+        ArenaDto arenaDto2 = new ArenaDto();
+        arenaDto2.setId("2");
+        arenaDto2.setName("Arena 2 DTO");
+
+        // Stub the repository behavior
+        when(arenaRepository.findAll()).thenReturn(Arrays.asList(arena1, arena2));
+
+        // Stub the mapper behavior
+        when(arenaMapper.map(arena1)).thenReturn(arenaDto1);
+        when(arenaMapper.map(arena2)).thenReturn(arenaDto2);
+
+        // Invoke the service method
+        List<ArenaDto> actualArenaDtos = arenaService.getAllArenas();
+
+        // Verify the repository interactions
+        verify(arenaRepository).findAll();
+
+        // Verify the mapper interactions
+        verify(arenaMapper).map(arena1);
+        verify(arenaMapper).map(arena2);
+
+        // Assert the result
+        Assertions.assertEquals(Arrays.asList(arenaDto1, arenaDto2), actualArenaDtos);
+    }
+
 
     private Arena generateArena() {
         Arena arena = new Arena();

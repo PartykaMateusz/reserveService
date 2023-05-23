@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 class ArenaServiceImpl implements ArenaService {
@@ -73,7 +74,10 @@ class ArenaServiceImpl implements ArenaService {
 
     @Override
     public List<ArenaDto> getAllArenas() {
-        return null;
+        List<Arena> arenas = arenaRepository.findAll();
+        return arenas.stream()
+                .map(arenaMapper::map)
+                .collect(Collectors.toList());
     }
 
     @Override
