@@ -1,15 +1,18 @@
 package com.reserve.reserveService.arena.internal;
 
-import com.reserve.reserveService.arena.internal.dto.ArenaDto;
-import com.reserve.reserveService.arena.internal.dto.CreateArenaRequest;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import com.reserve.reserveService.arena.internal.dto.arena.ArenaDto;
+import com.reserve.reserveService.arena.internal.dto.arena.CreateArenaRequest;
+import com.reserve.reserveService.arena.internal.dto.seats.RowDto;
+import com.reserve.reserveService.arena.internal.dto.seats.SectorDto;
+import com.reserve.reserveService.arena.internal.entity.*;
+import org.junit.jupiter.api.*;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ArenaMapperTest {
-
     private ArenaMapper arenaMapper;
 
     @BeforeEach
@@ -18,30 +21,61 @@ class ArenaMapperTest {
     }
 
     @Test
-    void mapCreateArenaRequestToArena() {
+    void testMap_CreateArenaRequestToArena() {
+        // Create sample CreateArenaRequest
         CreateArenaRequest createArenaRequest = new CreateArenaRequest();
-        createArenaRequest.setName("Test Arena");
-        createArenaRequest.setDescription("This is a test arena");
+        createArenaRequest.setName("Arena 1");
+        createArenaRequest.setDescription("Sample arena");
 
+        // Map CreateArenaRequest to Arena
         Arena arena = arenaMapper.map(createArenaRequest);
 
-        assertNotNull(arena);
-        assertEquals("Test Arena", arena.getName());
-        assertEquals("This is a test arena", arena.getDescription());
+        // Assert mapping result
+        assertEquals(createArenaRequest.getName(), arena.getName());
+        assertEquals(createArenaRequest.getDescription(), arena.getDescription());
     }
 
     @Test
-    void mapArenaToArenaDto() {
+    void testMap_ArenaToArenaDto() {
         Arena arena = new Arena();
         arena.setId("testId");
-        arena.setName("Test Arena");
-        arena.setDescription("This is a test arena");
+        arena.setName("Arena 1");
+        arena.setDescription("Sample arena");
+
+        Sector sector1 = new Sector();
+        sector1.setName("Sector 1");
+
+        Sector sector2 = new Sector();
+        sector2.setName("Sector 2");
+
+        Seat seat1 = new Seat(1L, Status.OCCUPIED );
+        Seat seat2 = new Seat(2L, Status.AVAILABLE);
+
+        Row row1 = new Row(1L, List.of(seat1));
+        Row row2 = new Row(2L, List.of(seat2));
+
+        sector1.setRows(List.of(row1));
+        sector2.setRows(List.of(row2));
+
+        arena.setSectors(Arrays.asList(sector1, sector2));
 
         ArenaDto arenaDto = arenaMapper.map(arena);
 
-        assertNotNull(arenaDto);
-        assertEquals("testId", arenaDto.getId());
-        assertEquals("Test Arena", arenaDto.getName());
-        assertEquals("This is a test arena", arenaDto.getDescription());
+        assertEquals(arena.getId(), arenaDto.getId());
+        assertEquals(arena.getName(), arenaDto.getName());
+        assertEquals(arena.getDescription(), arenaDto.getDescription());
+
+        List<SectorDto> sectorDtos = arenaDto.getSectors();
+        assertEquals(2, sectorDtos.size());
+
+        SectorDto sectorDto1 = sectorDtos.get(0);
+        List<RowDto> rowDtos1 = sectorDto1.getRows();
+        assertEquals(1, rowDtos1.size());
+        assertEquals(row1.getNumber(), rowDtos1.get(0).getNumber());
+
+        SectorDto sectorDto2 = sectorDtos.get(1);
+        List<RowDto> rowDtos2 = sectorDto2.getRows();
+        assertEquals(1, rowDtos2.size());
+        assertEquals(row2.getNumber(), rowDtos2.get(0).getNumber());
     }
 }

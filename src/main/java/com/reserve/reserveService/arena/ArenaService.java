@@ -1,8 +1,8 @@
 package com.reserve.reserveService.arena;
 
-import com.reserve.reserveService.arena.internal.dto.ArenaDto;
-import com.reserve.reserveService.arena.internal.dto.CreateArenaRequest;
-import com.reserve.reserveService.arena.internal.dto.UpdateArenaRequest;
+import com.reserve.reserveService.arena.internal.dto.arena.ArenaDto;
+import com.reserve.reserveService.arena.internal.dto.arena.CreateArenaRequest;
+import com.reserve.reserveService.arena.internal.dto.arena.UpdateArenaRequest;
 
 import java.util.List;
 

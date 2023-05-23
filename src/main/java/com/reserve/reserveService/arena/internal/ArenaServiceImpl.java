@@ -1,9 +1,10 @@
 package com.reserve.reserveService.arena.internal;
 
 import com.reserve.reserveService.arena.ArenaService;
-import com.reserve.reserveService.arena.internal.dto.ArenaDto;
-import com.reserve.reserveService.arena.internal.dto.CreateArenaRequest;
-import com.reserve.reserveService.arena.internal.dto.UpdateArenaRequest;
+import com.reserve.reserveService.arena.internal.dto.arena.ArenaDto;
+import com.reserve.reserveService.arena.internal.dto.arena.CreateArenaRequest;
+import com.reserve.reserveService.arena.internal.dto.arena.UpdateArenaRequest;
+import com.reserve.reserveService.arena.internal.entity.Arena;
 import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

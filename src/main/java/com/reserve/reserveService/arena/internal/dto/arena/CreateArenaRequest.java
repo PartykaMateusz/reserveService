@@ -1,5 +1,6 @@
-package com.reserve.reserveService.arena.internal.dto;
+package com.reserve.reserveService.arena.internal.dto.arena;
 
+import com.reserve.reserveService.arena.internal.dto.Unique;
 import lombok.Data;
 
 @Data

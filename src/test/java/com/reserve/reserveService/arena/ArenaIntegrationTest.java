@@ -2,10 +2,10 @@ package com.reserve.reserveService.arena;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.reserve.reserveService.arena.internal.Arena;
+import com.reserve.reserveService.arena.internal.entity.Arena;
 import com.reserve.reserveService.arena.internal.ArenaRepository;
-import com.reserve.reserveService.arena.internal.dto.ArenaDto;
-import com.reserve.reserveService.arena.internal.dto.CreateArenaRequest;
+import com.reserve.reserveService.arena.internal.dto.arena.ArenaDto;
+import com.reserve.reserveService.arena.internal.dto.arena.CreateArenaRequest;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

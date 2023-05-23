@@ -1,7 +1,6 @@
 package com.reserve.reserveService.event;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.reserve.reserveService.arena.internal.dto.CreateArenaRequest;
 import com.reserve.reserveService.event.internal.Event;
 import com.reserve.reserveService.event.internal.dto.CreateEventRequest;
 import com.reserve.reserveService.event.internal.dto.EventDto;
