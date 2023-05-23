@@ -1,7 +1,9 @@
 package com.reserve.reserveService.event;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.reserve.reserveService.arena.internal.dto.CreateArenaRequest;
 import com.reserve.reserveService.event.internal.Event;
+import com.reserve.reserveService.event.internal.dto.CreateEventRequest;
 import com.reserve.reserveService.event.internal.dto.EventDto;
 import com.reserve.reserveService.event.internal.EventRepository;
 import org.junit.jupiter.api.*;
@@ -61,12 +63,12 @@ class EventIntegrationTest {
 
     @Test
     void createEvent() throws Exception {
-        EventDto eventDto = new EventDto();
-        eventDto.setName("testName");
-        eventDto.setDescription("testDescription");
-        eventDto.setDateTime(LocalDateTime.of(2023,5,18,20,0));
+        CreateEventRequest createEventRequest = new CreateEventRequest();
+        createEventRequest.setName("testName");
+        createEventRequest.setDescription("testDescription");
+        createEventRequest.setDateTime(LocalDateTime.of(2023,5,18,20,0));
 
-        String eventDtoJson = objectMapper.writeValueAsString(eventDto);
+        String eventDtoJson = objectMapper.writeValueAsString(createEventRequest);
 
         MvcResult response = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/event")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -83,21 +85,20 @@ class EventIntegrationTest {
         Event result = optionalResult.get();
 
         // check if event id db equals data from dto
-        assertEquals(eventDto.getName(), result.getName());
-        assertEquals(eventDto.getDescription(), result.getDescription());
-        assertEquals(eventDto.getDateTime(), result.getDateTime());
+        assertEquals(createEventRequest.getName(), result.getName());
+        assertEquals(createEventRequest.getDescription(), result.getDescription());
         assertEquals(createdEventId, result.getId());
 
     }
 
     @Test
     void create2EventWithSameName_ShouldReturnBadRequest() throws Exception {
-        EventDto eventDto = new EventDto();
-        eventDto.setName("testName");
-        eventDto.setDescription("testDescription");
-        eventDto.setDateTime(LocalDateTime.of(2023,5,18,20,0));
+        CreateEventRequest createEventRequest = new CreateEventRequest();
+        createEventRequest.setName("testName");
+        createEventRequest.setDescription("testDescription");
+        createEventRequest.setDateTime(LocalDateTime.of(2023,5,18,20,0));
 
-        String eventDtoJson = objectMapper.writeValueAsString(eventDto);
+        String eventDtoJson = objectMapper.writeValueAsString(createEventRequest);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/event")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -146,6 +147,4 @@ class EventIntegrationTest {
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andReturn();
     }
-
-
 }

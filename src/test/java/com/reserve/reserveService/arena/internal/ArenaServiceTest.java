@@ -1,10 +1,7 @@
 package com.reserve.reserveService.arena.internal;
 
 import com.reserve.reserveService.arena.ArenaService;
-import com.reserve.reserveService.arena.internal.dto.ArenaDto;
 import com.reserve.reserveService.arena.internal.dto.CreateArenaRequest;
-import com.reserve.reserveService.event.internal.Event;
-import com.reserve.reserveService.event.internal.dto.CreateEventRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -73,7 +70,6 @@ class ArenaServiceTest {
             arenaService.getArena(TEST_ID);
         });
     }
-
 
     private Arena generateArena() {
         Arena arena = new Arena();

@@ -1,5 +1,6 @@
-package com.reserve.reserveService.event;
+package com.reserve.reserveService;
 
+import com.reserve.reserveService.arena.internal.ArenaNotFoundException;
 import com.reserve.reserveService.event.internal.EventNotFoundException;
 import com.reserve.reserveService.utils.ErrorResponse;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -10,11 +11,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @ControllerAdvice
-public class EventExceptionHandler {
+public class ArenaExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
@@ -26,7 +24,12 @@ public class EventExceptionHandler {
         return new ResponseEntity<>(getErrorResponse(error, 400), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(EventNotFoundException.class)
+    @ExceptionHandler({ArenaNotFoundException.class})
+    public ResponseEntity<ErrorResponse> handleArenaNotFoundExceptionn(ArenaNotFoundException ex) {
+        return new ResponseEntity<>(getErrorResponse(ex.getMessage(), 404), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({EventNotFoundException.class})
     public ResponseEntity<ErrorResponse> handleEventNotFoundException(EventNotFoundException ex) {
         return new ResponseEntity<>(getErrorResponse(ex.getMessage(), 404), HttpStatus.NOT_FOUND);
     }

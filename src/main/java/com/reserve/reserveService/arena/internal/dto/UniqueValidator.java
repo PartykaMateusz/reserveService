@@ -1,5 +1,7 @@
-package com.reserve.reserveService.event.internal.dto;
+package com.reserve.reserveService.arena.internal.dto;
 
+import com.reserve.reserveService.arena.internal.Arena;
+import com.reserve.reserveService.arena.internal.ArenaRepository;
 import com.reserve.reserveService.event.internal.Event;
 import com.reserve.reserveService.event.internal.EventRepository;
 import jakarta.validation.ConstraintValidator;
@@ -10,7 +12,7 @@ import java.util.List;
 
 public class UniqueValidator implements ConstraintValidator<Unique, String> {
     @Autowired
-    private EventRepository eventRepository;
+    private ArenaRepository arenaRepository;
 
     private String message;
 
@@ -25,6 +27,6 @@ public class UniqueValidator implements ConstraintValidator<Unique, String> {
     }
 
     private boolean isExist(String value) {
-        return !eventRepository.findByName(value).isEmpty();
+        return !arenaRepository.findByName(value).isEmpty();
     }
 }

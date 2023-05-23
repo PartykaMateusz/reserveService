@@ -6,7 +6,9 @@ import lombok.Data;
 public class ArenaDto {
 
     private String id;
+
     private String name;
+
     private String description;
 
 }
