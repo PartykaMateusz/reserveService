@@ -17,8 +17,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class ArenaServiceTest {
 
@@ -197,6 +196,33 @@ class ArenaServiceTest {
         Assertions.assertEquals(Arrays.asList(arenaDto1, arenaDto2), actualArenaDtos);
     }
 
+    @Test
+    void deleteArena_Exists() {
+        // Mock repository behavior
+        when(arenaRepository.existsById("sampleId")).thenReturn(true);
+
+        // Invoke the service method
+        arenaService.deleteArena("sampleId");
+
+        // Verify the repository interactions
+        verify(arenaRepository).existsById("sampleId");
+        verify(arenaRepository).deleteById("sampleId");
+    }
+
+    @Test
+    void deleteArena_NotExists() {
+        // Mock repository behavior
+        when(arenaRepository.existsById("sampleId")).thenReturn(false);
+
+        // Invoke the service method and assert the exception
+        Assertions.assertThrows(ArenaNotFoundException.class, () -> {
+            arenaService.deleteArena("sampleId");
+        });
+
+        // Verify the repository interaction
+        verify(arenaRepository).existsById("sampleId");
+        verify(arenaRepository, never()).deleteById(anyString());
+    }
 
     private Arena generateArena() {
         Arena arena = new Arena();

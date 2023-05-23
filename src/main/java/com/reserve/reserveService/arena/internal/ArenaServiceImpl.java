@@ -51,6 +51,8 @@ class ArenaServiceImpl implements ArenaService {
 
         final Arena updatedArena = arenaRepository.save(arena);
 
+        logger.info("Arena with id {}, successfully updated", id);
+
         return arenaMapper.map(updatedArena);
     }
 
@@ -69,6 +71,8 @@ class ArenaServiceImpl implements ArenaService {
 
         final Arena updatedArena = arenaRepository.save(arena);
 
+        logger.info("Arena with id {}, successfully updated", id);
+
         return arenaMapper.map(updatedArena);
     }
 
@@ -81,7 +85,13 @@ class ArenaServiceImpl implements ArenaService {
     }
 
     @Override
-    public String deleteArena(@NonNull final String id) {
-        return null;
+    public void deleteArena(@NonNull final String id) {
+        boolean exists = arenaRepository.existsById(id);
+        if (exists) {
+            arenaRepository.deleteById(id);
+            logger.info("Arena with id {}, successfully deleted", id);
+        } else {
+            throw new ArenaNotFoundException("Arena not found");
+        }
     }
 }

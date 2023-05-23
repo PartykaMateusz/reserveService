@@ -17,5 +17,5 @@ public interface ArenaService {
 
     List<ArenaDto> getAllArenas();
 
-    String deleteArena(String id);
+    void deleteArena(String id);
 }
