@@ -1,10 +1,11 @@
 package com.reserve.reserveService.event;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reserve.reserveService.event.internal.Event;
+import com.reserve.reserveService.event.internal.EventRepository;
 import com.reserve.reserveService.event.internal.dto.CreateEventRequest;
 import com.reserve.reserveService.event.internal.dto.EventDto;
-import com.reserve.reserveService.event.internal.EventRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -19,6 +20,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static com.mongodb.assertions.Assertions.assertTrue;
@@ -145,5 +147,31 @@ class EventIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andReturn();
+    }
+
+    @Test
+    void getAllEvents() throws Exception {
+        Event event = new Event();
+        event.setName("testName");
+        event.setDescription("testDescription");
+        Event event1 = new Event();
+        event1.setName("testName2");
+        event1.setDescription("testDescription2");
+
+        eventRepository.save(event);
+        eventRepository.save(event1);
+
+        MvcResult response = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/event")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        List<EventDto> events = objectMapper.readValue(response.getResponse().getContentAsString(), new TypeReference<List<EventDto>>() {});
+
+        assertEquals(2, events.size());
+        assertEquals("testName", events.get(0).getName());
+        assertEquals("testDescription", events.get(0).getDescription());
+        assertEquals("testName2", events.get(1).getName());
+        assertEquals("testDescription2", events.get(1).getDescription());
     }
 }
