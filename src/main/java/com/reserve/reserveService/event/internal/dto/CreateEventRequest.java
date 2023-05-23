@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Data
 public final class CreateEventRequest {
 
-    @NotBlank
+    @NotBlank(message = "name is required")
     @Size(min = 3, max = 25)
     @Unique(message = "name must be unique")
     private String name;
@@ -20,5 +20,8 @@ public final class CreateEventRequest {
 
     @NotNull
     private LocalDateTime dateTime;
+
+    @NotBlank(message = "arenaId is required")
+    private String arenaId;
 
 }

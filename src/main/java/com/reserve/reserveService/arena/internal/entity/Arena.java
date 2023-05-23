@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Document(collection = "events")
+@Document(collection = "arenas")
 @Data
 public class Arena {
 

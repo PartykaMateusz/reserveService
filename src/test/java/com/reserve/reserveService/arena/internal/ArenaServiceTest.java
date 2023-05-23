@@ -5,17 +5,21 @@ import com.reserve.reserveService.arena.internal.dto.arena.ArenaDto;
 import com.reserve.reserveService.arena.internal.dto.arena.CreateArenaRequest;
 import com.reserve.reserveService.arena.internal.dto.arena.UpdateArenaRequest;
 import com.reserve.reserveService.arena.internal.entity.Arena;
+import com.reserve.reserveService.arena.internal.exception.ArenaNotFoundException;
+import com.reserve.reserveService.arena.internal.repository.ArenaRepository;
+import com.reserve.reserveService.event.internal.entity.Event;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -225,6 +229,39 @@ class ArenaServiceTest {
         verify(arenaRepository, never()).deleteById(anyString());
     }
 
+    @Test
+    void attachEventToArena_NotExists() {
+        when(arenaRepository.findById(any())).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(ArenaNotFoundException.class, () -> {
+            arenaService.attachEventToArena(generateEvent(), "sampleId");
+        });
+    }
+
+    @Test
+    void attachEventToArena_ArenaExist() {
+        Arena arena = generateArena();
+        when(arenaRepository.findById(any())).thenReturn(Optional.of(arena));
+        Event event = generateEvent();
+
+        assertNull(event.getArena());
+
+        Event result = arenaService.attachEventToArena(generateEvent(), "sampleId");
+
+        assertEquals(arena, result.getArena());
+    }
+
+
+
+    private Event generateEvent() {
+        Event event = new Event();
+        event.setId("testEventId");
+        event.setName("name");
+        event.setDescription("desc");
+        event.setDateTime(LocalDateTime.of(2023,5,23,20,0));
+        return event;
+    }
+
     private Arena generateArena() {
         Arena arena = new Arena();
         arena.setId(TEST_ID);
@@ -232,6 +269,5 @@ class ArenaServiceTest {
         arena.setDescription(TEST_DESCRIPTION);
         return arena;
     }
-
 
 }

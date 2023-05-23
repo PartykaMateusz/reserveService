@@ -11,5 +11,6 @@ public final class EventDto {
     private String name;
     private String description;
     private LocalDateTime dateTime;
-
+    private String arenaId;
+    private String arenaName;
 }

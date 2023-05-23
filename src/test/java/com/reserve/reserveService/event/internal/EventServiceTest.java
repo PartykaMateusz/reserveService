@@ -1,9 +1,14 @@
 package com.reserve.reserveService.event.internal;
 
+import com.reserve.reserveService.arena.ArenaService;
+import com.reserve.reserveService.arena.internal.entity.Arena;
 import com.reserve.reserveService.event.EventService;
 import com.reserve.reserveService.event.internal.dto.CreateEventRequest;
 import com.reserve.reserveService.event.internal.dto.EventDto;
 import com.reserve.reserveService.event.internal.dto.UpdateEventRequest;
+import com.reserve.reserveService.event.internal.entity.Event;
+import com.reserve.reserveService.event.internal.exception.EventNotFoundException;
+import com.reserve.reserveService.event.internal.repository.EventRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,11 +28,15 @@ import static org.mockito.Mockito.*;
 class EventServiceTest {
 
     private static final String TEST_ID = "testId";
+    public static final String ARENA_NAME = "testName";
     private static final String TEST_NAME = "testName";
 
     private static final String TEST_DESCRIPTION = "testDesc";
 
     private static final LocalDateTime TEST_DATETIME = LocalDateTime.of(2023,6,17,20,0);
+    public static final String ARENA_ID = "testArenaId";
+
+    public static final String ARENA_DESC = "testArenaDesc";
 
     EventService eventService;
 
@@ -37,9 +46,12 @@ class EventServiceTest {
     @Mock
     private EventMapper eventMapper;
 
+    @Mock
+    private ArenaService arenaService;
+
     public EventServiceTest() {
         MockitoAnnotations.openMocks(this);
-        eventService = new EventServiceImpl(eventRepository, eventMapper);
+        eventService = new EventServiceImpl(eventRepository, eventMapper, arenaService);
     }
 
     @BeforeEach
@@ -66,6 +78,8 @@ class EventServiceTest {
         Event event = generateEvent();
         EventDto eventDto = generateEventDto();
         eventDto.setId(TEST_ID);
+        eventDto.setArenaId(ARENA_ID);
+        eventDto.setArenaName(ARENA_NAME);
 
         // Mock dependencies
         when(eventRepository.findById(TEST_ID)).thenReturn(Optional.of(event));
@@ -79,6 +93,8 @@ class EventServiceTest {
         assertEquals(TEST_DESCRIPTION, result.getDescription());
         assertEquals(TEST_DATETIME, result.getDateTime());
         assertEquals(TEST_ID, result.getId());
+        assertEquals(ARENA_ID, result.getArenaId());
+        assertEquals(ARENA_NAME, result.getArenaName());
     }
 
     @Test
@@ -177,10 +193,12 @@ class EventServiceTest {
         Event event1 = new Event();
         event1.setId("1");
         event1.setName("Event 1");
+        event1.setArena(generateArena());
 
         Event event2 = new Event();
         event2.setId("2");
         event2.setName("Event 2");
+        event2.setArena(generateArena());
 
         // Create sample Event DTOs
         EventDto eventDto1 = new EventDto();
@@ -255,5 +273,13 @@ class EventServiceTest {
         event.setDescription(TEST_DESCRIPTION);
         event.setDateTime(TEST_DATETIME);
         return event;
+    }
+
+    private Arena generateArena() {
+        Arena arena = new Arena();
+        arena.setId(ARENA_ID);
+        arena.setName(ARENA_NAME);
+        arena.setDescription(ARENA_DESC);
+        return arena;
     }
 }

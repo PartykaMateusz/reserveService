@@ -1,4 +1,4 @@
-package com.reserve.reserveService.event.internal;
+package com.reserve.reserveService.event.internal.exception;
 
 public class EventNotFoundException extends RuntimeException {
 

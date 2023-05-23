@@ -1,4 +1,4 @@
-package com.reserve.reserveService.arena.internal;
+package com.reserve.reserveService.arena.internal.exception;
 
 public class ArenaNotFoundException extends RuntimeException {
     public ArenaNotFoundException(String message) {

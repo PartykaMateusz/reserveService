@@ -2,8 +2,10 @@ package com.reserve.reserveService.event;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.reserve.reserveService.event.internal.Event;
-import com.reserve.reserveService.event.internal.EventRepository;
+import com.reserve.reserveService.arena.internal.entity.Arena;
+import com.reserve.reserveService.arena.internal.repository.ArenaRepository;
+import com.reserve.reserveService.event.internal.entity.Event;
+import com.reserve.reserveService.event.internal.repository.EventRepository;
 import com.reserve.reserveService.event.internal.dto.CreateEventRequest;
 import com.reserve.reserveService.event.internal.dto.EventDto;
 import org.junit.jupiter.api.*;
@@ -46,6 +48,9 @@ class EventIntegrationTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private ArenaRepository arenaRepository;
+
     @BeforeAll
     void setUp() {
         container.start();
@@ -58,6 +63,7 @@ class EventIntegrationTest {
 
     @AfterEach
     void clearDatabase() {
+        arenaRepository.deleteAll();
         eventRepository.deleteAll();
     }
 
@@ -68,6 +74,11 @@ class EventIntegrationTest {
         createEventRequest.setName("testName");
         createEventRequest.setDescription("testDescription");
         createEventRequest.setDateTime(LocalDateTime.of(2023,5,18,20,0));
+        createEventRequest.setArenaId("arenaId");
+
+        final Arena arena = getArena();
+
+        arenaRepository.save(arena);
 
         String eventDtoJson = objectMapper.writeValueAsString(createEventRequest);
 
@@ -89,7 +100,13 @@ class EventIntegrationTest {
         assertEquals(createEventRequest.getName(), result.getName());
         assertEquals(createEventRequest.getDescription(), result.getDescription());
         assertEquals(createdEventId, result.getId());
+        assertEquals(arena, result.getArena());
+    }
 
+    private Arena getArena() {
+        Arena arena = new Arena();
+        arena.setId("arenaId");
+        return arena;
     }
 
     @Test
@@ -98,6 +115,10 @@ class EventIntegrationTest {
         createEventRequest.setName("testName");
         createEventRequest.setDescription("testDescription");
         createEventRequest.setDateTime(LocalDateTime.of(2023,5,18,20,0));
+        createEventRequest.setArenaId("arenaId");
+
+        Arena arena = getArena();
+        arenaRepository.save(arena);
 
         String eventDtoJson = objectMapper.writeValueAsString(createEventRequest);
 

@@ -1,5 +1,6 @@
-package com.reserve.reserveService.event.internal;
+package com.reserve.reserveService.event.internal.repository;
 
+import com.reserve.reserveService.event.internal.entity.Event;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

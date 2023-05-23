@@ -1,8 +1,10 @@
-package com.reserve.reserveService.event.internal;
+package com.reserve.reserveService.event.internal.entity;
 
+import com.reserve.reserveService.arena.internal.entity.Arena;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
@@ -20,5 +22,8 @@ public class Event {
     private String name;
 
     private String description;
+
+    @DBRef
+    private Arena arena;
 
 }

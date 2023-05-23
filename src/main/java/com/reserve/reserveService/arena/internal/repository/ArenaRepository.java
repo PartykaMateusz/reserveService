@@ -1,4 +1,4 @@
-package com.reserve.reserveService.arena.internal;
+package com.reserve.reserveService.arena.internal.repository;
 
 import com.reserve.reserveService.arena.internal.entity.Arena;
 import org.springframework.data.mongodb.repository.MongoRepository;

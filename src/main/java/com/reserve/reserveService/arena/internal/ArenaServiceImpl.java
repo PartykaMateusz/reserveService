@@ -5,6 +5,9 @@ import com.reserve.reserveService.arena.internal.dto.arena.ArenaDto;
 import com.reserve.reserveService.arena.internal.dto.arena.CreateArenaRequest;
 import com.reserve.reserveService.arena.internal.dto.arena.UpdateArenaRequest;
 import com.reserve.reserveService.arena.internal.entity.Arena;
+import com.reserve.reserveService.arena.internal.exception.ArenaNotFoundException;
+import com.reserve.reserveService.arena.internal.repository.ArenaRepository;
+import com.reserve.reserveService.event.internal.entity.Event;
 import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,5 +97,15 @@ class ArenaServiceImpl implements ArenaService {
         } else {
             throw new ArenaNotFoundException("Arena not found");
         }
+    }
+
+    @Override
+    public Event attachEventToArena(@NonNull final Event event, @NonNull  final String arenaId) {
+        final Arena arena = arenaRepository.findById(arenaId)
+                .orElseThrow(() -> new ArenaNotFoundException("Arena not found with ID: " + arenaId));
+        logger.info("Attaching arena with id: {}, name: {} attached to event ID: {}, name: {}",
+                arenaId, arena.getName(), event.getId(), event.getId());
+        event.setArena(arena);
+        return event;
     }
 }

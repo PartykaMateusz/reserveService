@@ -3,7 +3,7 @@ package com.reserve.reserveService.arena;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reserve.reserveService.arena.internal.entity.Arena;
-import com.reserve.reserveService.arena.internal.ArenaRepository;
+import com.reserve.reserveService.arena.internal.repository.ArenaRepository;
 import com.reserve.reserveService.arena.internal.dto.arena.ArenaDto;
 import com.reserve.reserveService.arena.internal.dto.arena.CreateArenaRequest;
 import org.junit.jupiter.api.*;

@@ -1,7 +1,7 @@
 package com.reserve.reserveService;
 
-import com.reserve.reserveService.arena.internal.ArenaNotFoundException;
-import com.reserve.reserveService.event.internal.EventNotFoundException;
+import com.reserve.reserveService.arena.internal.exception.ArenaNotFoundException;
+import com.reserve.reserveService.event.internal.exception.EventNotFoundException;
 import com.reserve.reserveService.utils.ErrorResponse;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;

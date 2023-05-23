@@ -1,9 +1,14 @@
 package com.reserve.reserveService.event.internal;
 
+import com.reserve.reserveService.arena.ArenaService;
+import com.reserve.reserveService.arena.internal.entity.Arena;
 import com.reserve.reserveService.event.EventService;
 import com.reserve.reserveService.event.internal.dto.CreateEventRequest;
 import com.reserve.reserveService.event.internal.dto.EventDto;
 import com.reserve.reserveService.event.internal.dto.UpdateEventRequest;
+import com.reserve.reserveService.event.internal.entity.Event;
+import com.reserve.reserveService.event.internal.exception.EventNotFoundException;
+import com.reserve.reserveService.event.internal.repository.EventRepository;
 import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,16 +24,20 @@ class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
     private final EventMapper eventMapper;
+    private final ArenaService arenaService;
 
-    public EventServiceImpl(EventRepository eventRepository, EventMapper eventMapper) {
+    public EventServiceImpl(EventRepository eventRepository, EventMapper eventMapper, ArenaService arenaService) {
         this.eventRepository = eventRepository;
         this.eventMapper = eventMapper;
+        this.arenaService = arenaService;
     }
 
     @Override
     public String createEvent(@NonNull final CreateEventRequest createEventRequest) {
         logger.info("Creating new event {}, date: {}", createEventRequest.getName(), createEventRequest.getDateTime());
-        final Event result = eventRepository.save(eventMapper.map(createEventRequest));
+        final Event event = eventMapper.map(createEventRequest);
+        arenaService.attachEventToArena(event, createEventRequest.getArenaId());
+        final Event result = eventRepository.save(event);
         logger.info("Created event: {}", result.getId());
         return result.getId();
     }

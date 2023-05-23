@@ -1,6 +1,6 @@
 package com.reserve.reserveService.arena.internal.dto;
 
-import com.reserve.reserveService.arena.internal.ArenaRepository;
+import com.reserve.reserveService.arena.internal.repository.ArenaRepository;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
