@@ -1,7 +1,7 @@
 package com.reserve.reserveService.arena;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.reserve.reserveService.arena.ArenaController;
 import com.reserve.reserveService.arena.internal.Arena;
 import com.reserve.reserveService.arena.internal.ArenaRepository;
 import com.reserve.reserveService.arena.internal.dto.ArenaDto;
@@ -19,6 +19,7 @@ import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.mongodb.assertions.Assertions.assertTrue;
@@ -140,5 +141,31 @@ class ArenaIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andReturn();
+    }
+
+    @Test
+    void getAllArenas() throws Exception {
+        Arena arena = new Arena();
+        arena.setName("testName");
+        arena.setDescription("testDescription");
+        Arena arena2 = new Arena();
+        arena2.setName("testName2");
+        arena2.setDescription("testDescription2");
+
+        arenaRepository.save(arena);
+        arenaRepository.save(arena2);
+
+        MvcResult response = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/arena")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        List<ArenaDto> arenas = objectMapper.readValue(response.getResponse().getContentAsString(), new TypeReference<List<ArenaDto>>() {});
+
+        assertEquals(2, arenas.size());
+        assertEquals("testName", arenas.get(0).getName());
+        assertEquals("testDescription", arenas.get(0).getDescription());
+        assertEquals("testName2", arenas.get(1).getName());
+        assertEquals("testDescription2", arenas.get(1).getDescription());
     }
 }
