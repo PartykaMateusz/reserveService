@@ -27,4 +27,6 @@ public interface ArenaService {
     Event attachEventToArena(Event event, String arenaId);
 
     SectorDto addSector(String arenaId, Sector sector);
+
+    List<SectorDto> getArenaSectors(String arenaId);
 }

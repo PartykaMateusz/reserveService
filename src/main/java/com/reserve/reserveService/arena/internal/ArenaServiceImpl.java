@@ -9,7 +9,6 @@ import com.reserve.reserveService.arena.internal.exception.ArenaNotFoundExceptio
 import com.reserve.reserveService.arena.internal.exception.SectorAlreadyExist;
 import com.reserve.reserveService.arena.internal.repository.ArenaRepository;
 import com.reserve.reserveService.event.internal.entity.Event;
-import com.reserve.reserveService.sector.internal.dto.CreateSectorRequest;
 import com.reserve.reserveService.sector.internal.dto.SectorDto;
 import com.reserve.reserveService.sector.internal.entity.Sector;
 import lombok.NonNull;
@@ -124,6 +123,13 @@ class ArenaServiceImpl implements ArenaService {
         arena.addSector(sector);
         arenaRepository.save(arena);
         return arenaMapper.map(sector);
+    }
+
+    @Override
+    public List<SectorDto> getArenaSectors(@NonNull final String arenaId) {
+        final Arena arena = arenaRepository.findById(arenaId)
+                .orElseThrow(() -> new ArenaNotFoundException("Arena not found with ID: " + arenaId));
+        return arena.getSectors().stream().map(arenaMapper::map).toList();
     }
 
     private void checkSectorAlreadyExist(@NonNull final Arena arena, @NonNull final Sector sector) {

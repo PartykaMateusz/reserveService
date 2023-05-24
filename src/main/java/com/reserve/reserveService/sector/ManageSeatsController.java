@@ -1,11 +1,12 @@
 package com.reserve.reserveService.sector;
 
-import com.reserve.reserveService.arena.internal.dto.ArenaDto;
 import com.reserve.reserveService.sector.internal.dto.CreateSectorRequest;
 import com.reserve.reserveService.sector.internal.dto.SectorDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/arena") public class ManageSeatsController {
@@ -20,6 +21,12 @@ import org.springframework.web.bind.annotation.*;
     public ResponseEntity<SectorDto> addSector(@PathVariable final String arenaId,
                                               @RequestBody @Validated final CreateSectorRequest createSectorRequest) {
         SectorDto sectorDto = sectorService.addSector(arenaId, createSectorRequest);
+        return ResponseEntity.ok(sectorDto);
+    }
+
+    @GetMapping("/{arenaId}/sector")
+    public ResponseEntity<List<SectorDto>> addSector(@PathVariable final String arenaId) {
+        List<SectorDto> sectorDto = sectorService.getSector(arenaId);
         return ResponseEntity.ok(sectorDto);
     }
 }

@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 class SectorServiceImpl implements SectorService {
 
@@ -28,5 +30,11 @@ class SectorServiceImpl implements SectorService {
         SectorDto sectorDto = arenaService.addSector(arenaId, sector);
         logger.info("Sector successfully added, name: {}", sectorDto.getName());
         return sectorDto;
+    }
+
+    @Override
+    public List<SectorDto> getSector(@NonNull final String arenaId) {
+        List<SectorDto> aa = arenaService.getArenaSectors(arenaId);
+        return aa;
     }
 }

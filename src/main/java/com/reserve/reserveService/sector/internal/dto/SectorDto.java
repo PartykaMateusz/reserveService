@@ -10,7 +10,6 @@ public class SectorDto {
 
     private String name;
 
-    @JsonIgnore
     private List<RowDto> rows;
 
     public int getCapacity() {

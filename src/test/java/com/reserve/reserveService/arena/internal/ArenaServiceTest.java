@@ -10,7 +10,10 @@ import com.reserve.reserveService.arena.internal.exception.SectorAlreadyExist;
 import com.reserve.reserveService.arena.internal.repository.ArenaRepository;
 import com.reserve.reserveService.event.internal.entity.Event;
 import com.reserve.reserveService.sector.internal.dto.SectorDto;
+import com.reserve.reserveService.sector.internal.entity.Row;
+import com.reserve.reserveService.sector.internal.entity.Seat;
 import com.reserve.reserveService.sector.internal.entity.Sector;
+import com.reserve.reserveService.sector.internal.entity.Status;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +21,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -302,7 +306,46 @@ class ArenaServiceTest {
         verify(arenaRepository, times(1)).findById(arenaId);
         verify(arenaRepository, never()).save(arena);
         verify(arenaMapper, never()).map(sector);
+    }
 
+    @Test
+    void getArenaSectors() {
+        Arena arena = generateArena();
+        arena.setSectors(generateSectors());
+
+        when(arenaRepository.findById("arenaId")).thenReturn(Optional.of(arena));
+
+        List<SectorDto> sectorDtos = arenaService.getArenaSectors("arenaId");
+
+        assertEquals(2, sectorDtos.size());
+    }
+
+    private List<Sector> generateSectors() {
+        Sector sector1 = new Sector();
+        sector1.setName("A");
+        sector1.setRows(generateRows());
+
+        Sector sector2 = new Sector();
+        sector2.setName("B");
+        sector2.setRows(generateRows());
+
+        return List.of(sector1, sector2);
+    }
+
+    private List<Row> generateRows() {
+        Row row1 = new Row(1L, generateSeats(10));
+        Row row2 = new Row(2L, generateSeats(10));
+        Row row3 = new Row(3L, generateSeats(10));
+
+        return Arrays.asList(row1, row2, row3);
+    }
+
+    private List<Seat> generateSeats(int number) {
+        List<Seat> seats = new ArrayList<>();
+        for(int i=1 ; i<number ; i++) {
+            seats.add(new Seat((long) i, Status.AVAILABLE));
+        }
+        return seats;
     }
 
     private Event generateEvent() {
