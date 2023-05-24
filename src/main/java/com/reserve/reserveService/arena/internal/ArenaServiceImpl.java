@@ -6,6 +6,7 @@ import com.reserve.reserveService.arena.internal.dto.CreateArenaRequest;
 import com.reserve.reserveService.arena.internal.dto.UpdateArenaRequest;
 import com.reserve.reserveService.arena.internal.entity.Arena;
 import com.reserve.reserveService.arena.internal.exception.ArenaNotFoundException;
+import com.reserve.reserveService.arena.internal.exception.SectorAlreadyExist;
 import com.reserve.reserveService.arena.internal.repository.ArenaRepository;
 import com.reserve.reserveService.event.internal.entity.Event;
 import com.reserve.reserveService.sector.internal.dto.CreateSectorRequest;
@@ -119,9 +120,17 @@ class ArenaServiceImpl implements ArenaService {
                 .orElseThrow(() -> new ArenaNotFoundException("Arena not found with ID: " + arenaId));
         logger.info("Attaching sector name: {} attached to arena ID: {}, name: {}",
                 sector.getName(), arenaId, arena.getName());
+        checkSectorAlreadyExist(arena, sector);
         arena.addSector(sector);
         arenaRepository.save(arena);
-        SectorDto res = arenaMapper.map(sector);
-        return res;
+        return arenaMapper.map(sector);
+    }
+
+    private void checkSectorAlreadyExist(@NonNull final Arena arena, @NonNull final Sector sector) {
+        boolean sectorExists = arena.getSectors().stream()
+                .anyMatch(sec -> sec.getName().equals(sector.getName()));
+        if (sectorExists) {
+            throw new SectorAlreadyExist("Sector " + sector.getName()+" already exist in arena " + arena.getName());
+        }
     }
 }

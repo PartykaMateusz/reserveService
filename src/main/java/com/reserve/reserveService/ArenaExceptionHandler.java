@@ -1,6 +1,7 @@
 package com.reserve.reserveService;
 
 import com.reserve.reserveService.arena.internal.exception.ArenaNotFoundException;
+import com.reserve.reserveService.arena.internal.exception.SectorAlreadyExist;
 import com.reserve.reserveService.event.internal.exception.EventNotFoundException;
 import com.reserve.reserveService.utils.ErrorResponse;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -34,9 +35,14 @@ public class ArenaExceptionHandler {
         return new ResponseEntity<>(getErrorResponse(ex.getMessage(), 404), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler({SectorAlreadyExist.class})
+    public ResponseEntity<ErrorResponse> handleSectorAlreadyExist(SectorAlreadyExist ex) {
+        return new ResponseEntity<>(getErrorResponse(ex.getMessage(), 400), HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(Exception ex) {
-        return new ResponseEntity<>(getErrorResponse(ex.getMessage(), 500), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(getErrorResponse(ex.getMessage(), 500), HttpStatus.INTERNAL_SERVER_ERROR);
     }
     private static ErrorResponse getErrorResponse(String message, int status) {
         return new ErrorResponse(message, status);

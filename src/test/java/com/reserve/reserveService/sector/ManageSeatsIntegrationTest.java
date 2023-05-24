@@ -80,14 +80,11 @@ class ManageSeatsIntegrationTest {
 
         String sectorDtoJson = objectMapper.writeValueAsString(createSectorRequest);
 
-        MvcResult response = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/arena/" + ARENA_ID + "/sector")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/arena/" + ARENA_ID + "/sector")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(sectorDtoJson))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
-
-        // Retrieve the response content
-        //ArenaDto arenaDto = objectMapper.readValue(response.getResponse().getContentAsString(), ArenaDto.class);
 
         Optional<Arena> optionalResult = arenaRepository.findById(ARENA_ID);
 
@@ -98,8 +95,31 @@ class ManageSeatsIntegrationTest {
         assertEquals(1, result.getSectors().size());
         assertEquals(createSectorRequest.getName(), result.getSectors().get(0).getName());
         assertEquals(createSectorRequest.getCreateRowsRequest().size(), result.getSectors().get(0).getRows().size());
-//        assertEquals(createdEventId, result.getId());
-//        assertEquals(arena, result.getArena());
+    }
+
+    @Test
+    void addSector_2SameNamesInSameArena_ShouldReturnBadRequest() throws Exception {
+        CreateSectorRequest createSectorRequest = new CreateSectorRequest();
+        createSectorRequest.setName("testName");
+        createSectorRequest.setCreateRowsRequest(generateRowRequest());
+
+        final Arena arena = getArena();
+
+        arenaRepository.save(arena);
+
+        String sectorDtoJson = objectMapper.writeValueAsString(createSectorRequest);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/arena/" + ARENA_ID + "/sector")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(sectorDtoJson))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/arena/" + ARENA_ID + "/sector")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(sectorDtoJson))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn();
     }
 
     private Arena getArena() {

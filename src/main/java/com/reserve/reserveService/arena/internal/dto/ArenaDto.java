@@ -14,7 +14,7 @@ public class ArenaDto {
 
     private String description;
 
-    private List<SectorDto> sectors;
+    private List<SectorInArenaDto> sectors;
 
     private int capacity;
 

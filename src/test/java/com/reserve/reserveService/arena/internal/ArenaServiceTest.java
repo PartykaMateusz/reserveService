@@ -6,6 +6,7 @@ import com.reserve.reserveService.arena.internal.dto.CreateArenaRequest;
 import com.reserve.reserveService.arena.internal.dto.UpdateArenaRequest;
 import com.reserve.reserveService.arena.internal.entity.Arena;
 import com.reserve.reserveService.arena.internal.exception.ArenaNotFoundException;
+import com.reserve.reserveService.arena.internal.exception.SectorAlreadyExist;
 import com.reserve.reserveService.arena.internal.repository.ArenaRepository;
 import com.reserve.reserveService.event.internal.entity.Event;
 import com.reserve.reserveService.sector.internal.dto.SectorDto;
@@ -254,7 +255,7 @@ class ArenaServiceTest {
     }
 
     @Test
-    void testAddSector() {
+    void addSector() {
         String arenaId = "exampleArenaId";
         Sector sector = new Sector();
 
@@ -272,6 +273,35 @@ class ArenaServiceTest {
         verify(arenaRepository, times(1)).findById(arenaId);
         verify(arenaRepository, times(1)).save(arena);
         verify(arenaMapper, times(1)).map(sector);
+
+    }
+
+    @Test
+    void addSector_AlreadyExist_ShouldThrowException() {
+        String arenaId = "exampleArenaId";
+        Sector sector = new Sector();
+        sector.setName("testId");
+
+        Sector sector2 = new Sector();
+        sector2.setName("testId");
+
+        Arena arena = new Arena();
+        arena.setId(arenaId);
+        arena.setName("Example Arena");
+        arena.addSector(sector);
+
+        when(arenaRepository.findById(arenaId)).thenReturn(Optional.of(arena));
+        when(arenaRepository.save(any())).thenReturn(arena);
+        when(arenaMapper.map(any(Sector.class))).thenReturn(new SectorDto());
+
+        Assertions.assertThrows(SectorAlreadyExist.class, () -> {
+            arenaService.addSector(arenaId, sector);;
+        });
+
+        // Assert
+        verify(arenaRepository, times(1)).findById(arenaId);
+        verify(arenaRepository, never()).save(arena);
+        verify(arenaMapper, never()).map(sector);
 
     }
 

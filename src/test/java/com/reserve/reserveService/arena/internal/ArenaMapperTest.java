@@ -2,6 +2,7 @@ package com.reserve.reserveService.arena.internal;
 
 import com.reserve.reserveService.arena.internal.dto.ArenaDto;
 import com.reserve.reserveService.arena.internal.dto.CreateArenaRequest;
+import com.reserve.reserveService.arena.internal.dto.SectorInArenaDto;
 import com.reserve.reserveService.sector.internal.dto.RowDto;
 import com.reserve.reserveService.sector.internal.dto.SectorDto;
 import com.reserve.reserveService.arena.internal.entity.*;
@@ -69,17 +70,7 @@ class ArenaMapperTest {
         assertEquals(arena.getName(), arenaDto.getName());
         assertEquals(arena.getDescription(), arenaDto.getDescription());
 
-        List<SectorDto> sectorDtos = arenaDto.getSectors();
+        List<SectorInArenaDto> sectorDtos = arenaDto.getSectors();
         assertEquals(2, sectorDtos.size());
-
-        SectorDto sectorDto1 = sectorDtos.get(0);
-        List<RowDto> rowDtos1 = sectorDto1.getRows();
-        assertEquals(1, rowDtos1.size());
-        assertEquals(row1.getNumber(), rowDtos1.get(0).getNumber());
-
-        SectorDto sectorDto2 = sectorDtos.get(1);
-        List<RowDto> rowDtos2 = sectorDto2.getRows();
-        assertEquals(1, rowDtos2.size());
-        assertEquals(row2.getNumber(), rowDtos2.get(0).getNumber());
     }
 }
