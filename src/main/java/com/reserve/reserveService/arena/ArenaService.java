@@ -1,9 +1,13 @@
 package com.reserve.reserveService.arena;
 
-import com.reserve.reserveService.arena.internal.dto.arena.ArenaDto;
-import com.reserve.reserveService.arena.internal.dto.arena.CreateArenaRequest;
-import com.reserve.reserveService.arena.internal.dto.arena.UpdateArenaRequest;
+import com.reserve.reserveService.arena.internal.dto.ArenaDto;
+import com.reserve.reserveService.arena.internal.dto.CreateArenaRequest;
+import com.reserve.reserveService.arena.internal.dto.UpdateArenaRequest;
+import com.reserve.reserveService.arena.internal.entity.Arena;
 import com.reserve.reserveService.event.internal.entity.Event;
+import com.reserve.reserveService.sector.internal.dto.CreateSectorRequest;
+import com.reserve.reserveService.sector.internal.dto.SectorDto;
+import com.reserve.reserveService.sector.internal.entity.Sector;
 
 import java.util.List;
 
@@ -21,4 +25,6 @@ public interface ArenaService {
     void deleteArena(String id);
 
     Event attachEventToArena(Event event, String arenaId);
+
+    SectorDto addSector(String arenaId, Sector sector);
 }

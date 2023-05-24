@@ -1,6 +1,6 @@
-package com.reserve.reserveService.arena.internal.dto.arena;
+package com.reserve.reserveService.arena.internal.dto;
 
-import com.reserve.reserveService.arena.internal.dto.seats.SectorDto;
+import com.reserve.reserveService.sector.internal.dto.SectorDto;
 import lombok.Data;
 
 import java.util.List;

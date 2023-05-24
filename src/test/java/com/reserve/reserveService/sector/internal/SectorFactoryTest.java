@@ -1,11 +1,11 @@
-package com.reserve.reserveService.arena.internal;
+package com.reserve.reserveService.sector.internal;
 
-import com.reserve.reserveService.arena.internal.dto.seats.CreateRowRequest;
-import com.reserve.reserveService.arena.internal.dto.seats.CreateSectorRequest;
-import com.reserve.reserveService.arena.internal.entity.Row;
-import com.reserve.reserveService.arena.internal.entity.Seat;
-import com.reserve.reserveService.arena.internal.entity.Sector;
-import com.reserve.reserveService.arena.internal.entity.Status;
+import com.reserve.reserveService.sector.internal.dto.CreateRowRequest;
+import com.reserve.reserveService.sector.internal.dto.CreateSectorRequest;
+import com.reserve.reserveService.sector.internal.entity.Row;
+import com.reserve.reserveService.sector.internal.entity.Seat;
+import com.reserve.reserveService.sector.internal.entity.Sector;
+import com.reserve.reserveService.sector.internal.entity.Status;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

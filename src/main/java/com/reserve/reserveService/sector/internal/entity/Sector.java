@@ -1,4 +1,4 @@
-package com.reserve.reserveService.arena.internal.entity;
+package com.reserve.reserveService.sector.internal.entity;
 
 import lombok.Data;
 

@@ -1,13 +1,16 @@
 package com.reserve.reserveService.arena.internal;
 
 import com.reserve.reserveService.arena.ArenaService;
-import com.reserve.reserveService.arena.internal.dto.arena.ArenaDto;
-import com.reserve.reserveService.arena.internal.dto.arena.CreateArenaRequest;
-import com.reserve.reserveService.arena.internal.dto.arena.UpdateArenaRequest;
+import com.reserve.reserveService.arena.internal.dto.ArenaDto;
+import com.reserve.reserveService.arena.internal.dto.CreateArenaRequest;
+import com.reserve.reserveService.arena.internal.dto.UpdateArenaRequest;
 import com.reserve.reserveService.arena.internal.entity.Arena;
 import com.reserve.reserveService.arena.internal.exception.ArenaNotFoundException;
 import com.reserve.reserveService.arena.internal.repository.ArenaRepository;
 import com.reserve.reserveService.event.internal.entity.Event;
+import com.reserve.reserveService.sector.internal.dto.CreateSectorRequest;
+import com.reserve.reserveService.sector.internal.dto.SectorDto;
+import com.reserve.reserveService.sector.internal.entity.Sector;
 import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,5 +110,18 @@ class ArenaServiceImpl implements ArenaService {
                 arenaId, arena.getName(), event.getId(), event.getId());
         event.setArena(arena);
         return event;
+    }
+
+    @Override
+    public SectorDto addSector(@NonNull final String arenaId,
+                               @NonNull final Sector sector) {
+        final Arena arena = arenaRepository.findById(arenaId)
+                .orElseThrow(() -> new ArenaNotFoundException("Arena not found with ID: " + arenaId));
+        logger.info("Attaching sector name: {} attached to arena ID: {}, name: {}",
+                sector.getName(), arenaId, arena.getName());
+        arena.addSector(sector);
+        arenaRepository.save(arena);
+        SectorDto res = arenaMapper.map(sector);
+        return res;
     }
 }

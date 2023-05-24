@@ -1,6 +1,8 @@
 package com.reserve.reserveService.arena.internal.entity;
 
+import com.reserve.reserveService.sector.internal.entity.Sector;
 import lombok.Data;
+import lombok.NonNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -27,5 +29,9 @@ public class Arena {
         return sectors.stream()
                 .mapToInt(Sector::getCapacity)
                 .sum();
+    }
+
+    public void addSector(@NonNull final Sector sector) {
+        sectors.add(sector);
     }
 }

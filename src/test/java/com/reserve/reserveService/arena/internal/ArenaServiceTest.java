@@ -1,13 +1,15 @@
 package com.reserve.reserveService.arena.internal;
 
 import com.reserve.reserveService.arena.ArenaService;
-import com.reserve.reserveService.arena.internal.dto.arena.ArenaDto;
-import com.reserve.reserveService.arena.internal.dto.arena.CreateArenaRequest;
-import com.reserve.reserveService.arena.internal.dto.arena.UpdateArenaRequest;
+import com.reserve.reserveService.arena.internal.dto.ArenaDto;
+import com.reserve.reserveService.arena.internal.dto.CreateArenaRequest;
+import com.reserve.reserveService.arena.internal.dto.UpdateArenaRequest;
 import com.reserve.reserveService.arena.internal.entity.Arena;
 import com.reserve.reserveService.arena.internal.exception.ArenaNotFoundException;
 import com.reserve.reserveService.arena.internal.repository.ArenaRepository;
 import com.reserve.reserveService.event.internal.entity.Event;
+import com.reserve.reserveService.sector.internal.dto.SectorDto;
+import com.reserve.reserveService.sector.internal.entity.Sector;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -251,7 +253,27 @@ class ArenaServiceTest {
         assertEquals(arena, result.getArena());
     }
 
+    @Test
+    void testAddSector() {
+        String arenaId = "exampleArenaId";
+        Sector sector = new Sector();
 
+        Arena arena = new Arena();
+        arena.setId(arenaId);
+        arena.setName("Example Arena");
+
+        when(arenaRepository.findById(arenaId)).thenReturn(Optional.of(arena));
+        when(arenaRepository.save(any())).thenReturn(arena);
+        when(arenaMapper.map(any(Sector.class))).thenReturn(new SectorDto());
+
+        arenaService.addSector(arenaId, sector);
+
+        // Assert
+        verify(arenaRepository, times(1)).findById(arenaId);
+        verify(arenaRepository, times(1)).save(arena);
+        verify(arenaMapper, times(1)).map(sector);
+
+    }
 
     private Event generateEvent() {
         Event event = new Event();

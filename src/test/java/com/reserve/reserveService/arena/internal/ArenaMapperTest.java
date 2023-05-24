@@ -1,10 +1,14 @@
 package com.reserve.reserveService.arena.internal;
 
-import com.reserve.reserveService.arena.internal.dto.arena.ArenaDto;
-import com.reserve.reserveService.arena.internal.dto.arena.CreateArenaRequest;
-import com.reserve.reserveService.arena.internal.dto.seats.RowDto;
-import com.reserve.reserveService.arena.internal.dto.seats.SectorDto;
+import com.reserve.reserveService.arena.internal.dto.ArenaDto;
+import com.reserve.reserveService.arena.internal.dto.CreateArenaRequest;
+import com.reserve.reserveService.sector.internal.dto.RowDto;
+import com.reserve.reserveService.sector.internal.dto.SectorDto;
 import com.reserve.reserveService.arena.internal.entity.*;
+import com.reserve.reserveService.sector.internal.entity.Row;
+import com.reserve.reserveService.sector.internal.entity.Seat;
+import com.reserve.reserveService.sector.internal.entity.Sector;
+import com.reserve.reserveService.sector.internal.entity.Status;
 import org.junit.jupiter.api.*;
 
 import java.util.Arrays;

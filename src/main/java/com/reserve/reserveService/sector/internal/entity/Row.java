@@ -1,9 +1,8 @@
-package com.reserve.reserveService.arena.internal.entity;
+package com.reserve.reserveService.sector.internal.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data

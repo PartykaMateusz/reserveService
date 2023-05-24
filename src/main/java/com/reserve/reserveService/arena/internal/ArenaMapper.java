@@ -1,14 +1,14 @@
 package com.reserve.reserveService.arena.internal;
 
-import com.reserve.reserveService.arena.internal.dto.arena.ArenaDto;
-import com.reserve.reserveService.arena.internal.dto.arena.CreateArenaRequest;
-import com.reserve.reserveService.arena.internal.dto.seats.RowDto;
-import com.reserve.reserveService.arena.internal.dto.seats.SeatDto;
-import com.reserve.reserveService.arena.internal.dto.seats.SectorDto;
+import com.reserve.reserveService.arena.internal.dto.ArenaDto;
+import com.reserve.reserveService.arena.internal.dto.CreateArenaRequest;
+import com.reserve.reserveService.sector.internal.dto.RowDto;
+import com.reserve.reserveService.sector.internal.dto.SeatDto;
+import com.reserve.reserveService.sector.internal.dto.SectorDto;
 import com.reserve.reserveService.arena.internal.entity.Arena;
-import com.reserve.reserveService.arena.internal.entity.Row;
-import com.reserve.reserveService.arena.internal.entity.Seat;
-import com.reserve.reserveService.arena.internal.entity.Sector;
+import com.reserve.reserveService.sector.internal.entity.Row;
+import com.reserve.reserveService.sector.internal.entity.Seat;
+import com.reserve.reserveService.sector.internal.entity.Sector;
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
 
@@ -37,7 +37,7 @@ class ArenaMapper {
         return sectors.stream().map(this::map).toList();
     }
 
-    private SectorDto map(@NonNull final Sector sector) {
+    public SectorDto map(@NonNull final Sector sector) {
         SectorDto sectorDto = new SectorDto();
         sectorDto.setName(sector.getName());
         sectorDto.setRows(sector.getRows().stream().map(this::map).toList());
