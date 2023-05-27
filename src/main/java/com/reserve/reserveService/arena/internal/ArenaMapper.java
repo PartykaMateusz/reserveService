@@ -42,6 +42,7 @@ class ArenaMapper {
         SectorInArenaDto sectorDto = new SectorInArenaDto();
         sectorDto.setName(sector.getName());
         sectorDto.setCapacity(sector.getCapacity());
+        sectorDto.setId(sector.getId());
         return sectorDto;
     }
 
@@ -53,6 +54,7 @@ class ArenaMapper {
         SectorDto sectorDto = new SectorDto();
         sectorDto.setName(sector.getName());
         sectorDto.setRows(sector.getRows().stream().map(this::map).toList());
+        sectorDto.setId(sector.getId());
         return sectorDto;
     }
 

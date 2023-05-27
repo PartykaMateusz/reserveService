@@ -3,9 +3,7 @@ package com.reserve.reserveService.arena;
 import com.reserve.reserveService.arena.internal.dto.ArenaDto;
 import com.reserve.reserveService.arena.internal.dto.CreateArenaRequest;
 import com.reserve.reserveService.arena.internal.dto.UpdateArenaRequest;
-import com.reserve.reserveService.arena.internal.entity.Arena;
 import com.reserve.reserveService.event.internal.entity.Event;
-import com.reserve.reserveService.sector.internal.dto.CreateSectorRequest;
 import com.reserve.reserveService.sector.internal.dto.SectorDto;
 import com.reserve.reserveService.sector.internal.entity.Sector;
 
@@ -29,4 +27,6 @@ public interface ArenaService {
     SectorDto addSector(String arenaId, Sector sector);
 
     List<SectorDto> getArenaSectors(String arenaId);
+
+    SectorDto updateSector(String arenaId, String sectorId, Sector sector);
 }

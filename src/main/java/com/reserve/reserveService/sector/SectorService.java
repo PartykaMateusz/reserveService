@@ -9,4 +9,6 @@ public interface SectorService {
     SectorDto addSector(String arenaId, CreateSectorRequest createSectorRequest);
 
     List<SectorDto> getSector(String arenaId);
+
+    SectorDto updateSector(String arenaId, String sectorId, CreateSectorRequest createSectorRequest);
 }

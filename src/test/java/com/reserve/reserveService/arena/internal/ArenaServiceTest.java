@@ -14,9 +14,11 @@ import com.reserve.reserveService.sector.internal.entity.Row;
 import com.reserve.reserveService.sector.internal.entity.Seat;
 import com.reserve.reserveService.sector.internal.entity.Sector;
 import com.reserve.reserveService.sector.internal.entity.Status;
+import lombok.NonNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -271,13 +273,12 @@ class ArenaServiceTest {
         when(arenaRepository.save(any())).thenReturn(arena);
         when(arenaMapper.map(any(Sector.class))).thenReturn(new SectorDto());
 
-        arenaService.addSector(arenaId, sector);
+        SectorDto sectorDto = arenaService.addSector(arenaId, sector);
 
         // Assert
         verify(arenaRepository, times(1)).findById(arenaId);
         verify(arenaRepository, times(1)).save(arena);
         verify(arenaMapper, times(1)).map(sector);
-
     }
 
     @Test
@@ -320,14 +321,61 @@ class ArenaServiceTest {
         assertEquals(2, sectorDtos.size());
     }
 
+    @Test
+    void updateSector() {
+        //given
+        Arena existingArena;
+        List<Sector> existingSectors = new ArrayList<>();
+        existingSectors.add(new Sector("1", "Sector 1", new ArrayList<>()));
+        existingSectors.add(new Sector("2", "Sector 2", new ArrayList<>()));
+        existingArena = new Arena();
+        existingArena.setId("1");
+        existingArena.setName("Arena 1");
+        existingArena.setSectors(existingSectors);
+        Sector updatedSector = new Sector("2", "Updated Sector", new ArrayList<>());
+
+        //when
+        when(arenaRepository.findById("1")).thenReturn(Optional.of(existingArena));
+
+        // Call the updateSector method
+        SectorDto updatedSectorDto = arenaService.updateSector("1", "2", updatedSector);
+
+        // Verify that the arenaRepository.save() method was called once
+        verify(arenaRepository, times(1)).save(existingArena);
+        // Verify that the arenaMapper.map() method was called once
+        verify(arenaMapper, times(1)).map(updatedSector);
+        // Capture the argument passed to arenaRepository.save()
+        ArgumentCaptor<Arena> arenaCaptor = ArgumentCaptor.forClass(Arena.class);
+        verify(arenaRepository).save(arenaCaptor.capture());
+
+        // Assert the captured argument
+        Arena capturedArena = arenaCaptor.getValue();
+        assertNotNull(capturedArena);
+
+        // Assert that the updatedSector was applied to the capturedArena
+        Optional<Sector> capturedSector = findSectorById("2", capturedArena.getSectors());
+        assertTrue(capturedSector.isPresent());
+        assertEquals("Updated Sector", capturedSector.get().getName());
+
+//        // Assert the result of the update operation
+//        assertNotNull(updatedSectorDto);
+//        assertEquals("2", updatedSectorDto.getId());
+//        assertEquals("Updated Sector", updatedSectorDto.getName());
+    }
+
+    private Optional<Sector> findSectorById(String sectorId, List<Sector> sectors) {
+        return sectors.stream().filter(sector -> sector.getId().equals(sectorId)).findFirst();
+    }
     private List<Sector> generateSectors() {
         Sector sector1 = new Sector();
         sector1.setName("A");
         sector1.setRows(generateRows());
+        sector1.setId("sectorAId");
 
         Sector sector2 = new Sector();
         sector2.setName("B");
         sector2.setRows(generateRows());
+        sector2.setId("sectorBId");
 
         return List.of(sector1, sector2);
     }

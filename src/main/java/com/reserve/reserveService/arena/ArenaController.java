@@ -44,14 +44,16 @@ public class ArenaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ArenaDto> updateArena(@PathVariable String id, @RequestBody @Validated UpdateArenaRequest updateArenaRequest) {
+    public ResponseEntity<ArenaDto> updateArena(@PathVariable String id,
+                                                @RequestBody @Validated UpdateArenaRequest updateArenaRequest) {
         logger.trace("Updating arena with ID: {}", id);
         ArenaDto updatedArenaDto = arenaService.updateArena(id, updateArenaRequest);
         return ResponseEntity.ok(updatedArenaDto);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ArenaDto> partialUpdateArena(@PathVariable String id, @RequestBody @Validated UpdateArenaRequest partialUpdateArenaRequest) {
+    public ResponseEntity<ArenaDto> partialUpdateArena(@PathVariable String id,
+                                                       @RequestBody @Validated UpdateArenaRequest partialUpdateArenaRequest) {
         logger.trace("Partially updating arena with ID: {}", id);
         ArenaDto updatedArenaDto = arenaService.partialUpdateArena(id, partialUpdateArenaRequest);
         return ResponseEntity.ok(updatedArenaDto);

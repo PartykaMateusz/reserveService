@@ -34,7 +34,17 @@ class SectorServiceImpl implements SectorService {
 
     @Override
     public List<SectorDto> getSector(@NonNull final String arenaId) {
-        List<SectorDto> aa = arenaService.getArenaSectors(arenaId);
-        return aa;
+        return arenaService.getArenaSectors(arenaId);
+    }
+
+    @Override
+    public SectorDto updateSector(@NonNull final String arenaId,
+                                  @NonNull final String sectorId,
+                                  @NonNull final CreateSectorRequest createSectorRequest) {
+        logger.trace("updating sector in arena with ID: {}, sector: {}", arenaId, createSectorRequest.getName());
+        Sector sector = SectorFactory.createSector(createSectorRequest);
+        SectorDto sectorDto = arenaService.updateSector(arenaId, sectorId, sector);
+        logger.info("Sector updated, arenaId: {}, sector name: {}", arenaId, sectorDto.getName());
+        return sectorDto;
     }
 }

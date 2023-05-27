@@ -10,8 +10,11 @@ import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 class SectorFactory {
+
+    private SectorFactory() {}
 
     public static Sector createSector(@NonNull final CreateSectorRequest request) {
         final List<CreateRowRequest> rowsRequest = request.getCreateRowsRequest();
@@ -20,8 +23,14 @@ class SectorFactory {
         final Sector sector = new Sector();
         sector.setName(request.getName());
         sector.setRows(rows);
+        sector.setId(generateId());
 
         return sector;
+    }
+
+    private static String generateId() {
+        UUID uuid = UUID.randomUUID();
+        return uuid.toString();
     }
 
     protected static Row createRow(@NonNull final CreateRowRequest rowRequest) {

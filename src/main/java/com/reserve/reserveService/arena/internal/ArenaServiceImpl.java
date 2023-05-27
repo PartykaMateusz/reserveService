@@ -7,6 +7,7 @@ import com.reserve.reserveService.arena.internal.dto.UpdateArenaRequest;
 import com.reserve.reserveService.arena.internal.entity.Arena;
 import com.reserve.reserveService.arena.internal.exception.ArenaNotFoundException;
 import com.reserve.reserveService.arena.internal.exception.SectorAlreadyExist;
+import com.reserve.reserveService.arena.internal.exception.SectorNotFoundException;
 import com.reserve.reserveService.arena.internal.repository.ArenaRepository;
 import com.reserve.reserveService.event.internal.entity.Event;
 import com.reserve.reserveService.sector.internal.dto.SectorDto;
@@ -17,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -132,7 +134,28 @@ class ArenaServiceImpl implements ArenaService {
         return arena.getSectors().stream().map(arenaMapper::map).toList();
     }
 
-    private void checkSectorAlreadyExist(@NonNull final Arena arena, @NonNull final Sector sector) {
+    @Override
+    public SectorDto updateSector(@NonNull final String arenaId,
+                                  @NonNull final String sectorId,
+                                  @NonNull final Sector sector) {
+        final Arena arena = arenaRepository.findById(arenaId)
+                .orElseThrow(() -> new ArenaNotFoundException("Arena not found with ID: " + arenaId));
+        List<Sector> actualSectors = arena.getSectors();
+        Sector sectorToUpdate = findSectorById(sectorId, actualSectors)
+                .orElseThrow(() -> new SectorNotFoundException("Sector " + sector.getId() + "not found in arena " +arenaId));
+        sectorToUpdate.setName(sector.getName());
+        sectorToUpdate.setRows(sector.getRows());
+        arenaRepository.save(arena);
+        return arenaMapper.map(sector);
+    }
+
+    private Optional<Sector> findSectorById(@NonNull final String sectorId,
+                                            @NonNull final List<Sector> actualSectors) {
+        return actualSectors.stream().filter(sector -> sector.getId().equals(sectorId)).findFirst();
+    }
+
+    private void checkSectorAlreadyExist(@NonNull final Arena arena,
+                                         @NonNull final Sector sector) {
         boolean sectorExists = arena.getSectors().stream()
                 .anyMatch(sec -> sec.getName().equals(sector.getName()));
         if (sectorExists) {

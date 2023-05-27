@@ -28,6 +28,7 @@ class SectorFactoryTest {
         // Assertions
         Assertions.assertEquals("arena-1", createdSector.getName());
         Assertions.assertEquals(2, createdSector.getRows().size());
+        Assertions.assertNotNull(createdSector.getId());
     }
 
     @Test

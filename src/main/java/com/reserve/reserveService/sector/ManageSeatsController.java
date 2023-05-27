@@ -19,7 +19,7 @@ import java.util.List;
 
     @PostMapping("/{arenaId}/sector")
     public ResponseEntity<SectorDto> addSector(@PathVariable final String arenaId,
-                                              @RequestBody @Validated final CreateSectorRequest createSectorRequest) {
+                                               @RequestBody @Validated final CreateSectorRequest createSectorRequest) {
         SectorDto sectorDto = sectorService.addSector(arenaId, createSectorRequest);
         return ResponseEntity.ok(sectorDto);
     }
@@ -27,6 +27,14 @@ import java.util.List;
     @GetMapping("/{arenaId}/sector")
     public ResponseEntity<List<SectorDto>> addSector(@PathVariable final String arenaId) {
         List<SectorDto> sectorDto = sectorService.getSector(arenaId);
+        return ResponseEntity.ok(sectorDto);
+    }
+
+    @PutMapping("/{arenaId}/sector/{sectorId}")
+    public ResponseEntity<SectorDto> updateSector(@PathVariable final String arenaId,
+                                                  @PathVariable final String sectorId,
+                                                  @RequestBody @Validated final CreateSectorRequest createSectorRequest) {
+        SectorDto sectorDto = sectorService.updateSector(arenaId, sectorId, createSectorRequest);
         return ResponseEntity.ok(sectorDto);
     }
 }
