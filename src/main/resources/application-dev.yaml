@@ -1,11 +1,11 @@
 spring:
   application:
-    name: reserve-service
+    name: ArenaManagementService
   data:
     mongodb:
       user: root
       password: example
-      uri: mongodb://reserveservice-mongo-reserve-1:27017/reservations
+      uri: mongodb://ArenaManagementService-mongo-reserve-1:27017/arena-management
 
 
 server.port: 8083

@@ -9,7 +9,7 @@ group = 'com.reserve'
 sourceCompatibility = '17'
 
 tasks.named('build') {
-	archivesBaseName = 'reserveService'
+	archivesBaseName = 'ArenaManagementService'
 }
 
 configurations {

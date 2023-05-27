@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  reserve-service:
+  arena-management-service:
     build:
       context: .
       dockerfile: Dockerfile
@@ -16,7 +16,7 @@ services:
     networks:
       - reserve-network
 
-  mongo-reserve:
+  mongo-arenas:
     image: mongo
     ports:
       - "27017:27017"
