@@ -11,7 +11,9 @@ import com.reserve.arenamanagement.arena.internal.exception.SectorNotFoundExcept
 import com.reserve.arenamanagement.arena.internal.repository.ArenaRepository;
 import com.reserve.arenamanagement.event.internal.entity.Event;
 import com.reserve.arenamanagement.sector.internal.dto.SectorDto;
+import com.reserve.arenamanagement.sector.internal.entity.Seat;
 import com.reserve.arenamanagement.sector.internal.entity.Sector;
+import com.reserve.arenamanagement.sector.internal.entity.Status;
 import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -157,6 +159,23 @@ class ArenaServiceImpl implements ArenaService {
         List<Sector> actualSectors = arena.getSectors();
         Sector sector = findSectorById(sectorId, actualSectors)
                 .orElseThrow(() -> new SectorNotFoundException("Sector " + sectorId + " not found in arena " +arenaId));
+        return arenaMapper.map(sector);
+    }
+
+    @Override
+    public SectorDto reserveSeat(@NonNull final String arenaId,
+                                 @NonNull final String sectorId,
+                                 @NonNull final Long rowNumber,
+                                 @NonNull final Long seatNumber) {
+        final Arena arena = arenaRepository.findById(arenaId)
+                .orElseThrow(() -> new ArenaNotFoundException("Arena not found with ID: " + arenaId));
+        List<Sector> actualSectors = arena.getSectors();
+        Sector sector = findSectorById(sectorId, actualSectors)
+                .orElseThrow(() -> new SectorNotFoundException("Sector " + sectorId + " not found in arena " +arenaId));
+
+        final Seat seat = sector.getSeat(rowNumber, seatNumber);
+        seat.setStatus(Status.RESERVED);
+       // kafkaTemplate.publish(seat);
         return arenaMapper.map(sector);
     }
 

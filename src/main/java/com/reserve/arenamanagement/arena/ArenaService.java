@@ -31,4 +31,6 @@ public interface ArenaService {
     SectorDto updateSector(String arenaId, String sectorId, Sector sector);
 
     SectorDto getSector(String arenaId, String sectorId);
+
+    SectorDto reserveSeat(String arenaId, String sectorId, Long row, Long seat);
 }

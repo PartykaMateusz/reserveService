@@ -1,6 +1,7 @@
 package com.reserve.arenamanagement.sector;
 
 import com.reserve.arenamanagement.sector.internal.dto.CreateSectorRequest;
+import com.reserve.arenamanagement.sector.internal.dto.ReserveSeatRequest;
 import com.reserve.arenamanagement.sector.internal.dto.SectorDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -43,5 +44,13 @@ import java.util.List;
                                                   @RequestBody @Validated final CreateSectorRequest createSectorRequest) {
         SectorDto sectorDto = sectorService.updateSector(arenaId, sectorId, createSectorRequest);
         return ResponseEntity.ok(sectorDto);
+    }
+
+    @PostMapping("/{arenaId}/sector/{sectorId}/reserve")
+    public ResponseEntity<SectorDto> reserveSeat(@PathVariable final String arenaId,
+                                                 @PathVariable final String sectorId,
+                                                 @RequestBody @Validated final ReserveSeatRequest reserveSeatRequest) {
+        SectorDto sectorDto = sectorService.reserveSeat(arenaId, sectorId, reserveSeatRequest);
+        return ResponseEntity.ok(null);
     }
 }

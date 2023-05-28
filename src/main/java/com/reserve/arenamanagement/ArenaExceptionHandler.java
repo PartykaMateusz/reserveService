@@ -3,6 +3,7 @@ package com.reserve.arenamanagement;
 import com.reserve.arenamanagement.arena.internal.exception.ArenaNotFoundException;
 import com.reserve.arenamanagement.arena.internal.exception.SectorAlreadyExist;
 import com.reserve.arenamanagement.event.internal.exception.EventNotFoundException;
+import com.reserve.arenamanagement.sector.internal.exception.SeatNotExistInRow;
 import com.reserve.arenamanagement.utils.ErrorResponse;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,11 @@ public class ArenaExceptionHandler {
 
     @ExceptionHandler({SectorAlreadyExist.class})
     public ResponseEntity<ErrorResponse> handleSectorAlreadyExist(SectorAlreadyExist ex) {
+        return new ResponseEntity<>(getErrorResponse(ex.getMessage(), 400), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({SeatNotExistInRow.class})
+    public ResponseEntity<ErrorResponse> handleSeatNotExistInRow(SeatNotExistInRow ex) {
         return new ResponseEntity<>(getErrorResponse(ex.getMessage(), 400), HttpStatus.BAD_REQUEST);
     }
 

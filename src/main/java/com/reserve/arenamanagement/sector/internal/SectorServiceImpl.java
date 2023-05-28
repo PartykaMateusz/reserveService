@@ -3,6 +3,7 @@ package com.reserve.arenamanagement.sector.internal;
 import com.reserve.arenamanagement.arena.ArenaService;
 import com.reserve.arenamanagement.sector.SectorService;
 import com.reserve.arenamanagement.sector.internal.dto.CreateSectorRequest;
+import com.reserve.arenamanagement.sector.internal.dto.ReserveSeatRequest;
 import com.reserve.arenamanagement.sector.internal.dto.SectorDto;
 import com.reserve.arenamanagement.sector.internal.entity.Sector;
 import lombok.NonNull;
@@ -51,6 +52,24 @@ class SectorServiceImpl implements SectorService {
         Sector sector = SectorFactory.createSector(createSectorRequest);
         SectorDto sectorDto = arenaService.updateSector(arenaId, sectorId, sector);
         logger.info("Sector updated, arenaId: {}, sector name: {}", arenaId, sectorDto.getName());
+        return sectorDto;
+    }
+
+    @Override
+    public SectorDto reserveSeat(@NonNull final String arenaId,
+                                 @NonNull final String sectorId,
+                                 @NonNull final ReserveSeatRequest reserveSeatRequest) {
+        logger.trace("reserving seats in arena ID: {}, sector: {}, row: {}, seat: {}",
+                arenaId,
+                sectorId,
+                reserveSeatRequest.getRow(),
+                reserveSeatRequest.getSeat());
+        SectorDto sectorDto = arenaService.reserveSeat(arenaId, sectorId, reserveSeatRequest.getRow(), reserveSeatRequest.getSeat());
+        logger.trace("successfully reserved seats in arena ID: {}, sector: {}, row: {}, seat: {}",
+                arenaId,
+                sectorId,
+                reserveSeatRequest.getRow(),
+                reserveSeatRequest.getSeat());
         return sectorDto;
     }
 
