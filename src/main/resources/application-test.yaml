@@ -5,16 +5,17 @@ spring:
     mongodb:
       user: root
       password: example
-      uri: mongodb://ArenaManagementService-mongo-reserve-1:27017/arena-management
+      uri: mongodb://arenamanagementservice-mongo-arenas-1:27017/arena-management
 
 
 server.port: 8083
-#eureka:
-#  client:
-#    serviceUrl:
-#      defaultZone: http://localhost:8761/eureka
-#  instance:
-#    preferIpAddress: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://arenamanagementservice-discovery-service-1:8761/eureka/
+  instance:
+    prefer-ip-address: true
 
 feign:
   client:

@@ -1,6 +1,31 @@
 version: '3.8'
 
 services:
+  discovery-service:
+    build:
+      context: ../discovery-service
+      dockerfile: Dockerfile-discovery
+    ports:
+      - 8761:8761
+    environment:
+      - JAVA_TOOL_OPTIONS=-XX:MaxRAMPercentage=75.0
+#    command: ./gradlew clean bootRun --args='--spring.profiles.active=dev'
+    networks:
+      - reserve-network
+
+  reservation-service:
+    build:
+      context: ../reservation
+      dockerfile: Dockerfile-reservation
+    ports:
+      - 8084:8084
+      - 5006:5006
+    environment:
+      - JAVA_TOOL_OPTIONS=-XX:MaxRAMPercentage=75.0
+   # command: ./gradlew clean bootRun --args='--spring.profiles.active=dev'
+    networks:
+      - reserve-network
+
   arena-management-service:
     build:
       context: .
@@ -10,9 +35,7 @@ services:
       - 5005:5005
     environment:
       - JAVA_TOOL_OPTIONS=-XX:MaxRAMPercentage=75.0
-    command: ./gradlew clean bootRun --args='--spring.profiles.active=dev'
-#    command: ["java", "-jar", "reserveService.jar"]
-
+    #command: ./gradlew clean bootRun --args='--spring.profiles.active=dev'
     networks:
       - reserve-network
 
