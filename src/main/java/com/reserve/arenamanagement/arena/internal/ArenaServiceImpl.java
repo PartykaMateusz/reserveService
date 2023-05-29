@@ -17,6 +17,7 @@ import com.reserve.arenamanagement.sector.internal.entity.Status;
 import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,9 +32,12 @@ class ArenaServiceImpl implements ArenaService {
     private final ArenaMapper arenaMapper;
     private final ArenaRepository arenaRepository;
 
-    public ArenaServiceImpl(final ArenaMapper arenaMapper, final ArenaRepository arenaRepository) {
+    private final KafkaTemplate<String, String> kafkaTemplate;
+
+    public ArenaServiceImpl(ArenaMapper arenaMapper, ArenaRepository arenaRepository, KafkaTemplate<String, String> kafkaTemplate) {
         this.arenaMapper = arenaMapper;
         this.arenaRepository = arenaRepository;
+        this.kafkaTemplate = kafkaTemplate;
     }
 
     @Override
@@ -175,7 +179,7 @@ class ArenaServiceImpl implements ArenaService {
 
         final Seat seat = sector.getSeat(rowNumber, seatNumber);
         seat.setStatus(Status.RESERVED);
-       // kafkaTemplate.publish(seat);
+        kafkaTemplate.send("seatreservation", "hello kafka");
         return arenaMapper.map(sector);
     }
 
